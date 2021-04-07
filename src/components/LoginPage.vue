@@ -1,9 +1,9 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-    <form>
-      <input placeholder="username" type="text">
-      <input type="submit">
+    <form v-on:submit="doLogin">
+      <input v-model="username" placeholder="username" type="text">
+      <input type="submit"/>
     </form>
   </div>
 </template>
@@ -12,7 +12,20 @@
 export default {
   name: 'LoginPage',
   props: {
-    msg: String
+    msg: String,
+    logged: Boolean
+  },
+  data() {
+    return {
+      username: 'coucou'
+    }
+  },
+  methods: {
+    doLogin(e) {
+      e.preventDefault();
+      console.log(this.username);
+      this.$emit('authenticated', this.username);
+    }
   }
 }
 </script>

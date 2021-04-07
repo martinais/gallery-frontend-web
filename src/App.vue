@@ -1,5 +1,6 @@
 <template>
-  <LoginPage msg="Welcome to The Martinade"/>
+  <p>{{ test }}</p>
+  <LoginPage msg="Welcome to The Martinade" @authenticated="handleAuth"/>
 </template>
 
 <script>
@@ -9,6 +10,17 @@ export default {
   name: 'App',
   components: {
     LoginPage
+  },
+  data() {
+    return {
+      test: 'Hello'
+    }
+  },
+  methods: {
+    handleAuth(token) {
+      this.test = token;
+      console.log(token);
+    }
   }
 }
 </script>
