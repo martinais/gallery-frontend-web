@@ -31,14 +31,14 @@ export default {
       else this.access();
     },
     login() {
-      fetch('http://localhost:5000/login', {
+      fetch(process.env.VUE_APP_BACKEND_URL + '/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({'name':this.userName})
       }).then(this.emailed = true);
     },
     access() {
-      fetch('http://localhost:5000/token', {
+      fetch(process.env.VUE_APP_BACKEND_URL + '/token', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({'code':this.pinCode})

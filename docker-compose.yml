@@ -8,6 +8,8 @@ services:
       - 8080:8080
     volumes:
       - .:/usr/src/app
+    environment:
+      VUE_APP_BACKEND_URL: ${BACKEND_URL}
 
   backend:
     build:
