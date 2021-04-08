@@ -2,8 +2,10 @@
   <div class="hello">
     <h1>Welcome to The Martinade</h1>
     <form v-on:submit="handleSubmit">
-      <input v-if="!emailed" v-model="userName" placeholder="username" type="text">
-      <input v-if="emailed" v-model="pinCode" placeholder="XXX-XXX-XXX" type="text">
+      <input v-if="!emailed" v-model="userName" placeholder="username"
+             type="text">
+      <input v-if="emailed" v-model="pinCode" placeholder="XXXX-XXXX"
+             type="text">
       <input type="submit"/>
     </form>
   </div>
@@ -25,25 +27,35 @@ export default {
   methods: {
     handleSubmit(e) {
       e.preventDefault();
-      if (!this.emailed) {
-        if (this.userName == 'tristan') { // TODO query api /login
-          this.emailed = true;
+      if (!this.emailed) this.login();
+      else this.access();
+    },
+    login() {
+      fetch('http://localhost:5000/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({'name':this.userName})
+      }).then(this.emailed = true);
+    },
+    access() {
+      fetch('http://localhost:5000/token', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({'code':this.pinCode})
+      }).then(data => {
+        if (data.status == 201) {
+          console.log("LOGIN SUCCESS");
+          data.json().then(data => {
+            this.$emit('authenticated', {
+              name: this.userName,
+              token: data.access_token
+            });
+          });
         } else {
-          this.userName = '';
-          // TODO : error message
+          console.log("LOGIN FAILURE");
+          // TODO : show error
         }
-      } else {
-        if (this.pinCode == '000000000') { // TODO query api /token
-          let user = {
-            name: this.userName,
-            token: 'token_1000'
-          }
-          this.$emit('authenticated', user); // TODO send token
-        } else {
-          this.pinCode = '';
-          // TODO : error message
-        }
-      }
+      });
     }
   }
 }
