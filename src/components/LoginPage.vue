@@ -1,8 +1,9 @@
 <template>
   <div class="hello">
-    <h1>{{ msg }}</h1>
-    <form v-on:submit="doLogin">
-      <input v-model="username" placeholder="username" type="text">
+    <h1>Welcome to The Martinade</h1>
+    <form v-on:submit="handleSubmit">
+      <input v-if="!emailed" v-model="userName" placeholder="username" type="text">
+      <input v-if="emailed" v-model="pinCode" placeholder="XXX-XXX-XXX" type="text">
       <input type="submit"/>
     </form>
   </div>
@@ -13,18 +14,36 @@ export default {
   name: 'LoginPage',
   props: {
     msg: String,
-    logged: Boolean
   },
   data() {
     return {
-      username: 'coucou'
+      userName: '',
+      pinCode: '',
+      emailed: false
     }
   },
   methods: {
-    doLogin(e) {
+    handleSubmit(e) {
       e.preventDefault();
-      console.log(this.username);
-      this.$emit('authenticated', this.username);
+      if (!this.emailed) {
+        if (this.userName == 'tristan') { // TODO query api /login
+          this.emailed = true;
+        } else {
+          this.userName = '';
+          // TODO : error message
+        }
+      } else {
+        if (this.pinCode == '000000000') { // TODO query api /token
+          let user = {
+            name: this.userName,
+            token: 'token_1000'
+          }
+          this.$emit('authenticated', user); // TODO send token
+        } else {
+          this.pinCode = '';
+          // TODO : error message
+        }
+      }
     }
   }
 }

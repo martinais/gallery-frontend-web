@@ -1,25 +1,28 @@
 <template>
-  <p>{{ test }}</p>
-  <LoginPage msg="Welcome to The Martinade" @authenticated="handleAuth"/>
+  <div>
+    <MainPage v-if="user" :user="user" />
+    <LoginPage v-else @authenticated="handleAuth"/>
+  </div>
 </template>
 
 <script>
 import LoginPage from './components/LoginPage.vue'
+import MainPage from './components/MainPage.vue'
 
 export default {
   name: 'App',
   components: {
-    LoginPage
+    LoginPage,
+    MainPage
   },
   data() {
     return {
-      test: 'Hello'
+      user: null
     }
   },
   methods: {
-    handleAuth(token) {
-      this.test = token;
-      console.log(token);
+    handleAuth(user) {
+      this.user = user;
     }
   }
 }
