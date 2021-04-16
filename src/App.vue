@@ -1,23 +1,23 @@
 <template>
   <div>
-    <MainPage v-if="user" :user="user" />
+    <HomePage v-if="user" :user="user" />
     <LoginPage v-else @authenticated="handleAuth"/>
   </div>
 </template>
 
 <script>
 import LoginPage from './components/LoginPage.vue'
-import MainPage from './components/MainPage.vue'
+import HomePage from './components/HomePage.vue'
 
 export default {
   name: 'App',
   components: {
     LoginPage,
-    MainPage
+    HomePage
   },
   data() {
     return {
-      user: null
+      user: undefined
     }
   },
   methods: {
@@ -30,7 +30,7 @@ export default {
 
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: Serif, Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
