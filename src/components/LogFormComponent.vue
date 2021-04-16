@@ -18,7 +18,7 @@ export default {
     return {
       userName: '',
       pinCode: '',
-      emailed: true,
+      emailed: false,
       submitMsg: 'Mail me my code'
     }
   },
@@ -39,12 +39,6 @@ export default {
       });
     },
     access() {
-      console.log('HERE');
-      this.$emit('authenticated', {
-        name: 'tristan',
-        token: 'croute'
-      });
-      /*
       if (this.pinCode) {
         fetch(process.env.VUE_APP_BACKEND_URL + '/token', {
           method: 'POST',
@@ -65,7 +59,6 @@ export default {
           }
         });
       }
-      */
     }
 }
 }

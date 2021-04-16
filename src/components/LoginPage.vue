@@ -1,6 +1,6 @@
 <template>
   <div class="grid">
-    <Header />
+    <Header step='login' />
     <div class="welcome" id="welcome">
       <div>Welcome to</div><br><div>Martine's Pic</div>
     </div>

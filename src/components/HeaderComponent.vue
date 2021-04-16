@@ -6,7 +6,7 @@
       <button :class="{ selected: (step === 'signin') }">Log In</button>
     </div>
     <div v-else>
-      <button class="disconnectbtn">Disconnect</button>
+      <button v-on:click="disconnect" class="disconnectbtn">Disconnect</button>
     </div>
   </div>
 </template>
@@ -15,25 +15,20 @@
 export default {
   name: 'Header',
   props: {
-    authenticated: Boolean,
+    step: String
   },
   data() {
     return {
-      step: Step.LOGIN
     }
   },
   methods: {
+    disconnect() {
+      document.location = '/'
+    }
   }
-}
-
-const Step = {
-  LOGIN: 'login',
-  SIGNIN: 'signin',
-  HOMEPAGE: 'homepage',
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
   .header {
     background-color: #FCE0E0;
