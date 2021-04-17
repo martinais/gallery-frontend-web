@@ -2,7 +2,7 @@
   <div class="header">
     <span class="logo">M.</span>
     <div v-if="step === 'login' || step === 'signin'">
-      <button :class="{ selected: (step === 'login') }">Sign In</button>
+      <button class="signinbtn" :class="{ selected: (step === 'login') }">Sign In</button>
       <button :class="{ selected: (step === 'signin') }">Log In</button>
     </div>
     <div v-else>
