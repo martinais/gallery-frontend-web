@@ -2,8 +2,8 @@
   <div class="header">
     <span class="logo">M.</span>
     <div v-if="step === 'login' || step === 'signin'">
-      <button :class="{ selected: (step === 'login') }">Sign In</button>
-      <button :class="{ selected: (step === 'signin') }">Log In</button>
+      <button class="signinbtn" :class="{ selected: (step === 'signin') }">Sign In</button>
+      <button :class="{ selected: (step === 'login') }">Log In</button>
     </div>
     <div v-else>
       <button v-on:click="disconnect" class="disconnectbtn">Disconnect</button>
@@ -52,10 +52,10 @@ export default {
     cursor: pointer;
     font-size: 1em;
     font-family: Serif;
-    box-shadow: inset 8px 8px 16px #E6CBCB, inset -8px -8px 16px rgba(255, 241, 241, 0.6);
+    box-shadow: 8px 8px 16px #E5CBCB, -8px -8px 16px rgba(255, 241, 241, 0.6);
   }
   .selected {
-    box-shadow: 8px 8px 16px #E5CBCB, -8px -8px 16px rgba(255, 241, 241, 0.6);
+    box-shadow: inset 8px 8px 16px #E6CBCB, inset -8px -8px 16px rgba(255, 241, 241, 0.6);
   }
   .signinbtn {
     cursor: not-allowed;
