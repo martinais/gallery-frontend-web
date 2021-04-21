@@ -2,7 +2,17 @@
   <div class="grid">
     <Header step="homepage" />
     <div class="content">
-      bonjour {{ user.name }}
+      <p>Hi There...</p>
+      <br>
+      <p>The Martinade's Pic V 0.0.1 Is Out.</p>
+      <p>You've made it to your home page.</p>
+      <p>Congratulations</p>
+      <br>
+      <p>We're Busy working on your V 0.0.2 version of the site. Comming next are:</p>
+      <ul>
+        <li>The possibility to create albums.</li>
+        <li>The possibility to add your best pictures.</li>
+      </ul>
     </div>
   </div>
 </template>
@@ -31,5 +41,10 @@ export default {
       'content'
   }
   .header { grid-area: header; }
-  .content { grid-area: content; }
+  .content {
+    grid-area: content;
+    text-align: left;
+    margin: 0 auto;
+    font-size: 1.5em;
+  }
 </style>

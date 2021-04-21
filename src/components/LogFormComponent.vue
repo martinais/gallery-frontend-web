@@ -93,7 +93,6 @@ export default {
   }
   button {
     border-radius: 4px;
-    font-family: Serif;
     cursor: pointer;
     box-shadow: 8px 8px 16px #E5CBCB, -8px -8px 16px rgba(255, 241, 241, 0.6);
   }
