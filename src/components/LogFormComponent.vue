@@ -3,8 +3,11 @@
     <div class="formbox">
       <h1>Log In</h1>
       <form v-on:submit="handleSubmit">
-        <input v-model="userName" placeholder="Enter your Pseudo" type="text">
-        <input v-model="pinCode" placeholder="Enter the mail code" type="text">
+        <input :class="{ softInput: emailed }" :disabled="emailed"
+            v-model="userName" placeholder="Enter your Pseudo"
+            type="text" id="pseudoField" >
+        <input v-if="emailed" v-model="pinCode"
+          placeholder="Enter the mail code" type="text">
         <button type="submit">{{ submitMsg }}</button>
       </form>
     </div>
@@ -99,5 +102,8 @@ export default {
   button:active {
     box-shadow: inset 8px 8px 16px #E6CBCB, inset -8px -8px 16px rgba(255, 241, 241, 0.6);
 
+  }
+  .softInput {
+    box-shadow: none;
   }
 </style>
