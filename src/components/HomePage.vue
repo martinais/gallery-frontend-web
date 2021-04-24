@@ -1,6 +1,6 @@
 <template>
   <div class="grid">
-    <Header step="homepage" />
+    <Header :user="user" step="homepage" />
     <div class="content">
       <p>Hi There...</p>
       <br>
