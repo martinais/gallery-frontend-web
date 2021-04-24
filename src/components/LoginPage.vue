@@ -40,7 +40,7 @@ export default {
       '.       .       .       .       .       .       .       .       .     '
   }
   .header { grid-area: header; }
-  .welcome { grid-area: welcome; }
+  .welcome { grid-area: welcome; font-family: serif; }
   .logform { grid-area: logform; }
 
   #welcome {

@@ -19,6 +19,10 @@ reset:
 	$(PGEXEC) -c "CREATE DATABASE $(PGDB)"
 	$(DC) exec backend python -c 'import model; model.migrate_database()'
 	$(DC) exec kvstore redis-cli flushdb
+	-$(DC) exec backend rm -r /srv/data/pics
+	-$(DC) exec backend rm -r /srv/data/albums
+	$(DC) exec backend mkdir -p /srv/data/pics/
+	$(DC) exec backend mkdir -p /srv/data/albums/
 
 down:
 	$(DC) down --volumes

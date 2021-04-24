@@ -1,32 +1,29 @@
 <template>
   <div class="grid">
     <Header :user="user" step="homepage" />
-    <form v-on:submit="createAlbum">
-      <h1>Create Album</h1>
-      <input placeholder="Name" v-model="albumName" type="text"/>
-      <button type="submit">Create</button>
-    </form>
-    <div>
-      <h1>List Albums</h1>
-      <ul>
-        <li v-for="(album, index) in albums" v-bind:key="album.slug">
-          {{ album.name }}
-          <a v-on:click="removeAlbum(index)" href="#">delete</a>
-        </li>
-      </ul>
-    </div>
     <div class="content">
-      <p>Hi There...</p>
-      <br>
-      <p>The Martinade's Pic V 0.0.1 Is Out.</p>
-      <p>You've made it to your home page.</p>
-      <p>Congratulations</p>
-      <br>
-      <p>We're Busy working on your V 0.0.2 version of the site. Comming next are:</p>
-      <ul>
-        <li>The possibility to create albums.</li>
-        <li>The possibility to add your best pictures.</li>
-      </ul>
+      <div class="album-tile"
+           v-for="(album, index) in albums" v-bind:key="album.slug">
+        <div class="album-tile-top"></div>
+        <div class="album-tile-bottom">
+          <div class="album-tile-infos">
+            <div class="album-tile-title">{{ album.name }}</div>
+            <br>
+            <div class="album-tile-count">XXX Photos</div>
+          </div>
+          <a class="album-tile-delete"
+             v-on:click="removeAlbum(index)" href="#">delete</a>
+        </div>
+      </div>
+      <div class="album-tile album-tile-create">
+        +
+        <!-- TODO add an awesome logo -->
+      </div>
+      <form v-on:submit="createAlbum">
+        <h1>Create Album</h1>
+        <input placeholder="Name" v-model="albumName" type="text"/>
+        <button type="submit">Create</button>
+      </form>
     </div>
   </div>
 </template>
@@ -92,12 +89,76 @@ export default {
     grid-template-areas:
       'header'
       'content'
+      'content'
+      'content'
+      'content'
+      'content'
+      'content'
+      'content'
+      'content'
+      'content'
+      'content'
+      'content'
+      'content'
+      'content'
+      'content'
+      'content'
+      'content'
+      'content'
+      'content'
+      'content'
+      'content'
+      'content'
+      'content'
+      'content'
+      'content'
+      'content'
+      'content'
   }
   .header { grid-area: header; }
   .content {
     grid-area: content;
-    text-align: left;
-    margin: 0 auto;
     font-size: 1.5em;
+    overflow-y: scroll;
+  }
+  .album-tile {
+    display: inline;
+    margin: 1em;
+    border-radius: 20px;
+    float: left;
+    width: 300px;
+    height: 200px;
+    overflow: hidden;
+    box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
+  }
+  .album-tile:hover {
+    box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset, rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+  }
+  .album-tile-top {
+    position: relative;
+    height: 60%;
+    background-image: url('/album-default.jpg');
+    background-size: cover;
+  }
+  .album-tile-bottom {
+    position: relative;
+    height: 40%;
+    padding: 0.2em;
+    text-align: left;
+  }
+  .album-tile-infos {
+    display: inline;
+  }
+  .album-tile-title {
+    display: inline;
+  }
+  .album-tile-count {
+    display: inline;
+  }
+  .album-tile-delete {
+    float: right;
+  }
+  .album-tile-create {
+    border: solid;
   }
 </style>

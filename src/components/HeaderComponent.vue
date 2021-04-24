@@ -42,6 +42,7 @@ export default {
       'logo . . message . . buttons';
   }
   .logo {
+    font-family: Serif;
     font-size: 4em;
     margin: 0.2em;
     grid-area: logo;
@@ -56,7 +57,6 @@ export default {
   }
   button {
     float: right;
-    font-family: serif;
     display: inline;
     border-style: hidden;
     border-radius: 4px;
