@@ -3,16 +3,16 @@
     <span class="logo">M.</span>
     <div v-if="user" class="message">Welcome {{ user.name.toUpperCase() }}</div>
     <div class="buttons">
-      <div v-if="step === 'login' || step === 'signin'">
+      <button v-if="user" v-on:click="disconnect" class="disconnectbtn">
+        Disconnect
+      </button>
+      <div v-else>
         <button class="signinbtn" :class="{ selected: (step === 'signin') }">
           Sign In
         </button>
         <button :class="{ selected: (step === 'login') }">
           Log In
         </button>
-      </div>
-      <div v-else>
-        <button v-on:click="disconnect" class="disconnectbtn">Disconnect</button>
       </div>
     </div>
   </div>
@@ -24,10 +24,6 @@ export default {
   props: {
     step: String,
     user: Object
-  },
-  data() {
-    return {
-    }
   },
   methods: {
     disconnect() {
