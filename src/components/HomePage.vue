@@ -2,43 +2,36 @@
   <div class="grid">
     <Header :user="user" step="homepage" />
     <div class="content">
-      <div class="album-tile"
-           v-for="(album, index) in albums" v-bind:key="album.slug">
-        <div class="album-tile-top"></div>
-        <div class="album-tile-bottom">
-          <div class="album-tile-infos">
-            <div class="album-tile-title">{{ album.name }}</div>
-            <br>
-            <div class="album-tile-count">XXX Photos</div>
-          </div>
-          <a class="album-tile-delete"
-             v-on:click="removeAlbum(index)" href="#">delete</a>
+      <AlbumTile v-for="(album, index) in albums" v-bind:key="album.slug"
+                 :album="album" :index="index" @remove="removeAlbum" />
+      <AlbumTile @create="triggerCreation"/>
+      <div class="modal" v-if="albumCreation">
+        <div class="modal-content">
+          <form id="album-create-form" v-on:submit="createAlbum">
+            <h1>Create Album</h1>
+            <input placeholder="Name" v-model="albumName" type="text"/>
+            <button type="submit">Create</button>
+          </form>
+          <button v-on:click="albumCreation = false">Annuler</button>
         </div>
       </div>
-      <div class="album-tile album-tile-create">
-        +
-        <!-- TODO add an awesome logo -->
-      </div>
-      <form v-on:submit="createAlbum">
-        <h1>Create Album</h1>
-        <input placeholder="Name" v-model="albumName" type="text"/>
-        <button type="submit">Create</button>
-      </form>
     </div>
   </div>
 </template>
 
 <script>
-import Header from './HeaderComponent.vue'
+import Header from './HeaderComponent.vue';
+import AlbumTile from './AlbumTileComponent.vue';
 
 export default {
   name: 'HomePage',
-  components: { Header },
+  components: { Header, AlbumTile },
   props: {
     user: Object
   },
   data() {
     return {
+      albumCreation: false,
       albumName: '',
       albums: []
     }
@@ -52,6 +45,11 @@ export default {
     });
   },
   methods: {
+    triggerCreation() {
+      console.log(this.albumCreation);
+      this.albumCreation = true;
+      console.log(this.albumCreation);
+    },
     createAlbum(e) {
       e.preventDefault();
       fetch(process.env.VUE_APP_BACKEND_URL + '/albums', {
@@ -64,6 +62,7 @@ export default {
       }).then(response => {
         if (response.status == 201)
           response.json().then(album => this.albums.push(album));
+        this.albumCreation = false;
       });
     },
     removeAlbum(index) {
@@ -121,44 +120,30 @@ export default {
     font-size: 1.5em;
     overflow-y: scroll;
   }
-  .album-tile {
-    display: inline;
-    margin: 1em;
-    border-radius: 20px;
-    float: left;
-    width: 300px;
-    height: 200px;
-    overflow: hidden;
-    box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
+  .modal {
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
   }
-  .album-tile:hover {
-    box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset, rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
-  }
-  .album-tile-top {
+  .modal-content {
     position: relative;
-    height: 60%;
-    background-image: url('/album-default.jpg');
-    background-size: cover;
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 2em;
+    border: 1px solid #888;
+    width: 60%;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+    animation-name: animatetop;
+    animation-duration: 0.4s;
   }
-  .album-tile-bottom {
-    position: relative;
-    height: 40%;
-    padding: 0.2em;
-    text-align: left;
-  }
-  .album-tile-infos {
-    display: inline;
-  }
-  .album-tile-title {
-    display: inline;
-  }
-  .album-tile-count {
-    display: inline;
-  }
-  .album-tile-delete {
-    float: right;
-  }
-  .album-tile-create {
-    border: solid;
+  @keyframes animatetop {
+    from {top: -300px; opacity: 0}
+    to {top: 0; opacity: 1}
   }
 </style>
