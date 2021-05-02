@@ -1,14 +1,14 @@
 <template>
   <div class="grid">
     <Header :user="user" step="homepage" />
-    <div class="content">
+    <div class="content" v-on:click="closeModal">
       <AlbumTile v-for="(album, index) in albums" v-bind:key="album.slug"
                  :album="album" :index="index" @remove="removeAlbum" />
       <AlbumTile @create="triggerCreation"/>
-      <div class="modal" v-if="albumCreation">
-        <div class="modal-content">
+      <div id="modal" v-if="albumCreation">
+        <div id="modal-content">
           <form id="album-create-form" v-on:submit="createAlbum">
-            <h1>Create Album</h1>
+            <h1>Create a new album</h1>
             <input placeholder="Name" v-model="albumName" type="text"/>
             <button type="submit">Create</button>
           </form>
@@ -20,23 +20,22 @@
 </template>
 
 <script>
-import Header from './HeaderComponent.vue';
-import AlbumTile from './AlbumTileComponent.vue';
+import Header from '../components/HeaderComponent.vue';
+import AlbumTile from '../components/AlbumTileComponent.vue';
 
 export default {
   name: 'HomePage',
   components: { Header, AlbumTile },
-  props: {
-    user: Object
-  },
   data() {
     return {
       albumCreation: false,
       albumName: '',
-      albums: []
+      albums: [],
+      user: {},
     }
   },
   mounted() {
+    this.user = JSON.parse(localStorage.getItem('user'));
     fetch(process.env.VUE_APP_BACKEND_URL + '/albums', {
       headers: {'Authorization': 'Bearer ' + this.user.token},
     }).then(response => {
@@ -45,6 +44,21 @@ export default {
     });
   },
   methods: {
+    abolutePosition() {
+//      let modal = document.getElementById('modal-content');
+//      let top = 0, left = 0;
+//      do {
+//        top += element.offsetTop || 0;
+//        left += element.offsetLeft || 0;
+//        element = element.offsetParent;
+//      } while(element);
+//      return {
+//        top: top,
+//        left: left,
+//      }
+    },
+    closeModal() {
+    },
     triggerCreation() {
       console.log(this.albumCreation);
       this.albumCreation = true;
@@ -80,6 +94,8 @@ export default {
 
 <style scoped>
   .grid {
+    font-family: sans-serif;
+    text-align: center;
     background-color: white;
     background-size: cover;
     position: absolute;
@@ -120,25 +136,24 @@ export default {
     font-size: 1.5em;
     overflow-y: scroll;
   }
-  .modal {
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
+  #modal {
+    position: fixed;
+    z-index: 1;
     left: 0;
     top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.5);
   }
-  .modal-content {
+  #modal-content {
     position: relative;
-    background-color: #fefefe;
+    border-radius: 20px;
+    border: 1px solid #888;
+    background-color: #f6f6f6;
+    width: 60%;
     margin: 5% auto;
     padding: 2em;
-    border: 1px solid #888;
-    width: 60%;
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
     animation-name: animatetop;
     animation-duration: 0.4s;
   }

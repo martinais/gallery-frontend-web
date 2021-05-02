@@ -17,6 +17,7 @@
     <div v-else v-on:click="$emit('create')"
          class="album-tile album-tile-create">
       <p class="create-logo">+</p>
+      <p class="create-label">Create New Album</p>
     </div>
   </div>
 </template>
@@ -41,10 +42,10 @@ export default {
     height: 200px;
     overflow: hidden;
     cursor: pointer;
-    box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
+    box-shadow: 0px 0px 25px rgba(0,0,0,0.25);
   }
   .album-tile:hover {
-    box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset, rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+    box-shadow: 0px 0px 20px 5px rgba(0,0,0,0.25);
   }
   .album-tile-top {
     position: relative;
@@ -72,9 +73,20 @@ export default {
   }
   .album-tile-create {
     border: solid;
+    border-width: 3px;
+    position: relative;
   }
   .create-logo {
-    font-size: 3em;
-    margin-top: 0.8em;
+    font-size: 9em;
+    font-family: monospace;
+    margin-top: 5%;
+  }
+  .create-label {
+    font-weight: lighter;
+    font-size: 15pt;
+    position: absolute;
+    bottom: 0;
+    margin-bottom: 15px;
+    width: 100%;
   }
 </style>

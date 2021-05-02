@@ -51,10 +51,11 @@ export default {
           if (data.status == 201) {
             console.log("LOGIN SUCCESS");
             data.json().then(data => {
-              this.$emit('authenticated', {
+              localStorage.setItem("user", JSON.stringify({
                 name: this.userName,
                 token: data.access_token
-              });
+              }));
+              this.$emit('authenticated');
             });
           } else {
             console.log("LOGIN FAILURE");

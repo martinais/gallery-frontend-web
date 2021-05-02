@@ -22,11 +22,19 @@
 export default {
   name: 'Header',
   props: {
-    step: String,
-    user: Object
+  },
+  data() {
+    return {
+      step: undefined,
+      user: undefined
+    }
+  },
+  mounted() {
+    this.user = JSON.parse(localStorage.getItem('user'));
   },
   methods: {
     disconnect() {
+      localStorage.removeItem('user');
       document.location = '/'
     }
   }
