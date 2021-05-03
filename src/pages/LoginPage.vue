@@ -37,6 +37,7 @@ export default {
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
     display: grid;
+    grid-auto-rows: min-content;
     grid-template-areas:
       'header  header  header  header  header  header  header  header  header'
       'welcome welcome welcome .       .       .       .       .       .     '

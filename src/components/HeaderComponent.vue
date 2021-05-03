@@ -53,15 +53,18 @@ export default {
     font-family: Serif;
     font-size: 4em;
     margin: 0.2em;
+    margin-bottom: 0;
     grid-area: logo;
   }
   .message {
     font-size: 2em;
     margin: 1em auto;
     grid-area: message;
+    margin-bottom: 0;
   }
   .buttons {
     grid-area: buttons;
+    margin-bottom: 0;
   }
   button {
     float: right;

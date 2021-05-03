@@ -1,5 +1,4 @@
 import { createApp, h } from 'vue'
-//import App from './App.vue'
 
 import LoginPage from './pages/LoginPage.vue'
 import HomePage from './pages/HomePage.vue'
@@ -10,10 +9,10 @@ const NotFoundComponent = { template: '<p>Page not found</p>' }
 const routes = {
   '/': LoginPage,
   '/home': HomePage,
-  '/gallery': GalleryPage
+  '/album': GalleryPage
 }
 
-const SimpleRouter = {
+const router = {
   data: () => ({
     currentRoute: window.location.pathname
   }),
@@ -27,4 +26,4 @@ const SimpleRouter = {
   }
 }
 
-createApp(SimpleRouter).mount('#app')
+createApp(router).mount('#app')

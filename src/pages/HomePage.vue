@@ -2,7 +2,9 @@
   <div class="grid">
     <Header :user="user" step="homepage" />
     <div class="content" v-on:click="closeModal">
-      <AlbumTile v-for="(album, index) in albums" v-bind:key="album.slug"
+      <AlbumTile v-for="(album, index) in albums"
+                 v-bind:key="album.slug"
+                 v-on:click="navigateAlbum(album.slug)"
                  :album="album" :index="index" @remove="removeAlbum" />
       <AlbumTile @create="triggerCreation"/>
       <div id="modal" v-if="albumCreation">
@@ -44,6 +46,7 @@ export default {
     });
   },
   methods: {
+    navigateAlbum: (slug) => document.location = '/album?slug=' + slug,
     abolutePosition() {
 //      let modal = document.getElementById('modal-content');
 //      let top = 0, left = 0;
@@ -101,38 +104,16 @@ export default {
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
     display: grid;
+    grid-auto-rows: min-content;
     grid-template-areas:
       'header'
-      'content'
-      'content'
-      'content'
-      'content'
-      'content'
-      'content'
-      'content'
-      'content'
-      'content'
-      'content'
-      'content'
-      'content'
-      'content'
-      'content'
-      'content'
-      'content'
-      'content'
-      'content'
-      'content'
-      'content'
-      'content'
-      'content'
-      'content'
-      'content'
-      'content'
       'content'
   }
   .header { grid-area: header; }
   .content {
     grid-area: content;
+    grid-row-start: 2;
+    grid-row-end: 10;
     font-size: 1.5em;
     overflow-y: scroll;
   }

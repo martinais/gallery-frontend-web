@@ -1,7 +1,7 @@
 <template>
   <div class="grid">
-    <Header :user="user" />
-    <h1>Gallery</h1>
+    <Header />
+      <h1>Gallery for {{ slug }}</h1>
   </div>
 </template>
 
@@ -11,10 +11,16 @@ import Header from '../components/HeaderComponent.vue';
 export default {
   name: 'Gallery',
   components: { Header },
-  props: {
-    user: Object,
-    album: Object
+  data() {
+    return {
+      slug: ''
+    }
   },
+  mounted() {
+    const params = new URLSearchParams(location.search);
+    this.slug = params.get('slug')
+    if (!this.slug) document.location = '/'
+  }
 }
 </script>
 
@@ -27,33 +33,9 @@ export default {
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
     display: grid;
+    grid-auto-rows: min-content;
     grid-template-areas:
       'header'
-      'content'
-      'content'
-      'content'
-      'content'
-      'content'
-      'content'
-      'content'
-      'content'
-      'content'
-      'content'
-      'content'
-      'content'
-      'content'
-      'content'
-      'content'
-      'content'
-      'content'
-      'content'
-      'content'
-      'content'
-      'content'
-      'content'
-      'content'
-      'content'
-      'content'
       'content'
   }
 </style>
