@@ -9,12 +9,16 @@
       <AlbumTile @create="triggerCreation"/>
       <div id="modal" v-if="albumCreation">
         <div id="modal-content">
+          <font-awesome-icon id="modal-cancel" 
+            :icon="['fa', 'times']"
+             v-on:click="albumCreation = false" />
           <form id="album-create-form" v-on:submit.prevent="createAlbum">
             <h1>Create a new album</h1>
-            <input placeholder="Name" v-model="albumName" type="text"/>
-            <button type="submit">Create</button>
+            <input v-model="albumName" placeholder="Name" type="text"/>
+            <button type="submit">
+              <font-awesome-icon :icon="['fa', 'check']" />
+            </button>
           </form>
-          <button v-on:click="albumCreation = false">Annuler</button>
         </div>
       </div>
     </div>
@@ -47,21 +51,6 @@ export default {
   },
   methods: {
     navigateAlbum: (slug) => document.location = '/album?slug=' + slug,
-    abolutePosition() {
-//      let modal = document.getElementById('modal-content');
-//      let top = 0, left = 0;
-//      do {
-//        top += element.offsetTop || 0;
-//        left += element.offsetLeft || 0;
-//        element = element.offsetParent;
-//      } while(element);
-//      return {
-//        top: top,
-//        left: left,
-//      }
-    },
-    closeModal() {
-    },
     triggerCreation() {
       console.log(this.albumCreation);
       this.albumCreation = true;
@@ -95,6 +84,41 @@ export default {
 </script>
 
 <style scoped>
+  input {
+    outline: none;
+    width: 80%;
+    padding: 15px;
+    border: none;
+    border-bottom: solid;
+    border-radius: 10px 0 0 0;
+    border-color: grey;
+    border-width: 5px;
+    background-color: lightgrey;
+  }
+  input:focus {
+    border-color: black;
+  }
+  form > button {
+    outline: none;
+    padding: 15px;
+    border: none;
+    border-bottom: solid;
+    border-radius: 0 10px 0 0;
+    border-color: grey;
+    border-width: 5px;
+    background-color: lightgrey;
+    color: grey;
+  }
+  form > button:hover {
+    cursor: pointer;
+    color: green;
+  }
+  form > button:focus {
+    border-color: black;
+  }
+  form {
+    margin: 1em;
+  }
   .grid {
     font-family: sans-serif;
     text-align: center;
@@ -133,9 +157,18 @@ export default {
     background-color: #f6f6f6;
     width: 60%;
     margin: 5% auto;
-    padding: 2em;
+    padding: 1em;
     animation-name: animatetop;
     animation-duration: 0.4s;
+  }
+  #modal-cancel {
+    border: none;
+    color: grey;
+    float: right;
+  }
+  #modal-cancel:hover {
+    color: black;
+    cursor: pointer;
   }
   @keyframes animatetop {
     from {top: -300px; opacity: 0}
