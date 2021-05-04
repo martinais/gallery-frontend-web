@@ -2,7 +2,7 @@
   <div class="logform">
     <div class="formbox">
       <h1>Log In</h1>
-      <form v-on:submit="handleSubmit">
+      <form v-on:submit.prevent="handleSubmit">
         <input :class="{ softInput: emailed }" :disabled="emailed"
             v-model="userName" placeholder="Enter your Pseudo"
             type="text" id="pseudoField" >
@@ -26,8 +26,7 @@ export default {
     }
   },
   methods: {
-    handleSubmit(e) {
-      e.preventDefault();
+    handleSubmit() {
       if (!this.emailed) this.login();
       else this.access();
     },

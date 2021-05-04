@@ -9,7 +9,7 @@
       <AlbumTile @create="triggerCreation"/>
       <div id="modal" v-if="albumCreation">
         <div id="modal-content">
-          <form id="album-create-form" v-on:submit="createAlbum">
+          <form id="album-create-form" v-on:submit.prevent="createAlbum">
             <h1>Create a new album</h1>
             <input placeholder="Name" v-model="albumName" type="text"/>
             <button type="submit">Create</button>
@@ -67,8 +67,7 @@ export default {
       this.albumCreation = true;
       console.log(this.albumCreation);
     },
-    createAlbum(e) {
-      e.preventDefault();
+    createAlbum() {
       fetch(process.env.VUE_APP_BACKEND_URL + '/albums', {
         method: 'POST',
         headers: {

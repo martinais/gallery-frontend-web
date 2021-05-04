@@ -2,15 +2,18 @@
   <div>
     <div v-if="album">
       <div class="album-tile">
-        <div class="album-tile-top"></div>
+        <div class="album-tile-top">
+          <a class="album-tile-delete" href="#"
+             v-on:click.stop="$emit('remove', index)">
+            <font-awesome-icon :icon="['fa', 'trash']" />
+          </a>
+        </div>
         <div class="album-tile-bottom">
           <div class="album-tile-infos">
             <div class="album-tile-title">{{ album.name }}</div>
             <br>
-            <div class="album-tile-count">XXX Photos</div>
+            <div class="album-tile-count">XXX photos</div>
           </div>
-          <a class="album-tile-delete" href="#"
-             v-on:click="$emit('remove', index)">delete</a>
         </div>
       </div>
     </div>
@@ -53,10 +56,18 @@ export default {
     background-image: url('/album-default.jpg');
     background-size: cover;
   }
+  .album-tile-delete {
+    float: right;
+    color: #f6f6f6;
+    margin: 15px;
+  }
+  .album-tile-delete:hover {
+    color: red;
+  }
   .album-tile-bottom {
     position: relative;
     height: 40%;
-    padding: 0.2em;
+    padding: 15px;
     text-align: left;
   }
   .album-tile-infos {
@@ -67,9 +78,8 @@ export default {
   }
   .album-tile-count {
     display: inline;
-  }
-  .album-tile-delete {
-    float: right;
+    color: #0000008f;
+    font-size: 0.8em;
   }
   .album-tile-create {
     border: solid;
