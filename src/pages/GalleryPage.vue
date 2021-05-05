@@ -1,19 +1,28 @@
 <template>
   <div class="grid">
     <Header />
-      <h1>Gallery for {{ slug }}</h1>
+    <h1>Gallery for {{ slug }}</h1>
+    <button v-on:click="displayImport = true">Importer une photo</button>
+    <Modal v-if="displayImport" @close="displayImport = false">
+      <form>
+        <input type="file"/>
+        <input type="submit"/>
+      </form>
+    </Modal>
   </div>
 </template>
 
 <script>
 import Header from '../components/HeaderComponent.vue';
+import Modal from '../components/ModalComponent.vue';
 
 export default {
   name: 'Gallery',
-  components: { Header },
+  components: { Header, Modal },
   data() {
     return {
-      slug: ''
+      slug: '',
+      displayImport: false,
     }
   },
   mounted() {
