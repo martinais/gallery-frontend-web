@@ -6,21 +6,16 @@
                  v-bind:key="album.slug"
                  v-on:click="navigateAlbum(album.slug)"
                  :album="album" :index="index" @remove="removeAlbum" />
-      <AlbumTile @create="triggerCreation"/>
-      <div id="modal" v-if="albumCreation">
-        <div id="modal-content">
-          <font-awesome-icon id="modal-cancel" 
-            :icon="['fa', 'times']"
-             v-on:click="albumCreation = false" />
-          <form id="album-create-form" v-on:submit.prevent="createAlbum">
-            <h1>Create a new album</h1>
-            <input v-model="albumName" placeholder="Name" type="text"/>
-            <button type="submit">
-              <font-awesome-icon :icon="['fa', 'check']" />
-            </button>
-          </form>
-        </div>
-      </div>
+      <AlbumTile @create="albumCreation = true"/>
+      <Modal v-if="albumCreation" @close="albumCreation = false">
+        <form id="album-create-form" v-on:submit.prevent="createAlbum">
+          <h1>Create a new album</h1>
+          <input v-model="albumName" placeholder="Name" type="text"/>
+          <button type="submit">
+            <font-awesome-icon :icon="['fa', 'check']" />
+          </button>
+        </form>
+      </Modal>
     </div>
   </div>
 </template>
@@ -28,10 +23,11 @@
 <script>
 import Header from '../components/HeaderComponent.vue';
 import AlbumTile from '../components/AlbumTileComponent.vue';
+import Modal from '../components/ModalComponent.vue';
 
 export default {
   name: 'HomePage',
-  components: { Header, AlbumTile },
+  components: { Header, AlbumTile, Modal },
   data() {
     return {
       albumCreation: false,
@@ -51,11 +47,6 @@ export default {
   },
   methods: {
     navigateAlbum: (slug) => document.location = '/album?slug=' + slug,
-    triggerCreation() {
-      console.log(this.albumCreation);
-      this.albumCreation = true;
-      console.log(this.albumCreation);
-    },
     createAlbum() {
       fetch(process.env.VUE_APP_BACKEND_URL + '/albums', {
         method: 'POST',
@@ -139,39 +130,5 @@ export default {
     grid-row-end: 10;
     font-size: 1.5em;
     overflow-y: scroll;
-  }
-  #modal {
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.5);
-  }
-  #modal-content {
-    position: relative;
-    border-radius: 20px;
-    border: 1px solid #888;
-    background-color: #f6f6f6;
-    width: 60%;
-    margin: 5% auto;
-    padding: 1em;
-    animation-name: animatetop;
-    animation-duration: 0.4s;
-  }
-  #modal-cancel {
-    border: none;
-    color: grey;
-    float: right;
-  }
-  #modal-cancel:hover {
-    color: black;
-    cursor: pointer;
-  }
-  @keyframes animatetop {
-    from {top: -300px; opacity: 0}
-    to {top: 0; opacity: 1}
   }
 </style>
