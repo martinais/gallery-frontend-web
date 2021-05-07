@@ -3,7 +3,7 @@
     <Header />
     <h1>Gallery for {{ slug }}</h1>
     <button v-on:click="displayImport = true">Importer une photo</button>
-    <!--<div v-for="pic in pics">{{ pic }}</div>-->
+    <div v-bind:key="index" v-for="(pic, index) in pics">{{ pic }}</div>
     <Modal v-if="displayImport" @close="displayImport = false">
       <form v-on:submit.prevent="importPic">
         <!--<input @change="updateFiles" type="file" multiple />-->
@@ -23,38 +23,54 @@ export default {
   components: { Header, Modal },
   data() {
     return {
-      slug: '',
+      slug: undefined,
       displayImport: false,
       picFile: undefined,
       pics: [],
     }
   },
   mounted() {
-    this.user = JSON.parse(localStorage.getItem('user'));
     const params = new URLSearchParams(location.search);
     this.slug = params.get('slug')
+    this.user = JSON.parse(localStorage.getItem('user'));
     if (!this.slug) document.location = '/'
+    this.updatePics()
   },
   methods: {
+    updatePics() {
+      fetch(process.env.VUE_APP_BACKEND_URL + '/albums/' + this.slug + '/pics', {
+        method: 'GET',
+        headers: {'Authorization': 'Bearer ' + this.user.token}
+      }).then(response => response.json()).then(data => this.pics = data.pics)
+    },
     updateFile(event) {
       this.picFile = event.target.files[0];
     },
     importPic() {
-      this.picFile.arrayBuffer().then(
-        buffer => window.crypto.subtle.digest('SHA-1', buffer).then(
-          hashBuffer => {
-            const hashArray =  Array.from(new Uint8Array(hashBuffer));
-            const hash = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-            const fd = new FormData();
-            fd.append('file', this.picFile);
-            fetch(process.env.VUE_APP_BACKEND_URL + '/pic/' + hash, {
+      this.picFile.arrayBuffer()
+        .then(buffer => window.crypto.subtle.digest('SHA-1', buffer))
+        .then(hashBuffer => {
+          const hashArray =  Array.from(new Uint8Array(hashBuffer));
+          const hash = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+          const fd = new FormData();
+          fd.append('file', this.picFile);
+          fetch(process.env.VUE_APP_BACKEND_URL + '/pic/' + hash, {
+            method: 'PUT',
+            headers: {'Authorization': 'Bearer ' + this.user.token},
+            body: fd
+          }).then(response => {
+            if (response.status != 204) return
+            this.updatePics()
+            fetch(process.env.VUE_APP_BACKEND_URL + '/albums/' + this.slug + '/pics', {
               method: 'PUT',
-              headers: {'Authorization': 'Bearer ' + this.user.token},
-              body: fd
-            }).then(res => console.log(res))
-          }
-        )
-      );
+              headers: {
+                'Authorization': 'Bearer ' + this.user.token,
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({pics: [hash]})
+            }).then(this.displayImport = false)
+          })
+        });
     }
   }
 }
