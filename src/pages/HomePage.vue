@@ -99,9 +99,9 @@ export default {
     border-width: 5px;
     background-color: lightgrey;
     color: grey;
+    cursor: pointer;
   }
   form > button:hover {
-    cursor: pointer;
     color: green;
   }
   form > button:focus {

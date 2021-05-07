@@ -2,12 +2,17 @@
   <div class="grid">
     <Header />
     <h1>Gallery for {{ slug }}</h1>
-    <button v-on:click="displayImport = true">Importer une photo</button>
+      <!--
+      <font-awesome-icon id="import-logo" :icon="['fa', 'plus']"/>
+      -->
+    <button id="import-btn" v-on:click="displayImport = true">
+      +
+    </button>
     <div v-bind:key="index" v-for="(pic, index) in pics">{{ pic }}</div>
     <Modal v-if="displayImport" @close="displayImport = false">
       <form v-on:submit.prevent="importPic">
         <!--<input @change="updateFiles" type="file" multiple />-->
-        <input @change="updateFile" type="file"/>
+        <input id="input-upload" @change="updateFile" type="file"/>
         <input type="submit"/>
       </form>
     </Modal>
@@ -90,4 +95,29 @@ export default {
       'header'
       'content'
   }
+  #import-btn {
+    position: absolute;
+    bottom: 30px;
+    right: 30px;
+    width: 70px;
+    height: 70px;
+    border-radius: 100%;
+    border-width: 0;
+    background-color: #FCE0E0;
+    cursor: pointer;
+    /* replace with a font-awesome logo ? */
+    font-size: 3em;
+    font-weight: bolder;
+    color: white;
+  }
+  /* 
+  #import-logo {
+    position: absolute;
+    bottom: 50px;
+    right: 50px;
+    font-size: 2em;
+    cursor: pointer;
+    color: white;
+  }
+  */
 </style>
