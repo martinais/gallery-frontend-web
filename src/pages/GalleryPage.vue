@@ -8,11 +8,14 @@
     <button id="import-btn" v-on:click="displayImport = true">
       +
     </button>
-    <div v-bind:key="index" v-for="(pic, index) in pics">{{ pic }}</div>
+    <div v-bind:key="index" v-for="(pic, index) in pics">
+      {{ pic }} <a href="#" v-on:click="removePic(index)">delete</a>
+    </div>
     <Modal v-if="displayImport" @close="displayImport = false">
       <form v-on:submit.prevent="importPic">
         <!--<input @change="updateFiles" type="file" multiple />-->
-        <input id="input-upload" @change="updateFile" type="file"/>
+        <input id="input-upload" type="file"
+               @change="this.picFile = event.target.files[0]"/>
         <input type="submit"/>
       </form>
     </Modal>
@@ -48,8 +51,15 @@ export default {
         headers: {'Authorization': 'Bearer ' + this.user.token}
       }).then(response => response.json()).then(data => this.pics = data.pics)
     },
-    updateFile(event) {
-      this.picFile = event.target.files[0];
+    removePic(index) {
+      fetch(process.env.VUE_APP_BACKEND_URL + '/albums/' + this.slug + '/pics', {
+        method: 'PATCH',
+        headers: {
+          'Authorization': 'Bearer ' + this.user.token,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({'-': [this.pics[index]]})
+      }).then(() => { this.updatePics() })
     },
     importPic() {
       this.picFile.arrayBuffer()
@@ -65,15 +75,14 @@ export default {
             body: fd
           }).then(response => {
             if (response.status != 204) return
-            this.updatePics()
             fetch(process.env.VUE_APP_BACKEND_URL + '/albums/' + this.slug + '/pics', {
-              method: 'PUT',
+              method: 'PATCH',
               headers: {
                 'Authorization': 'Bearer ' + this.user.token,
                 'Content-Type': 'application/json',
               },
-              body: JSON.stringify({pics: [hash]})
-            }).then(this.displayImport = false)
+              body: JSON.stringify({'+': [hash]})
+            }).then(() => { this.displayImport = false; this.updatePics() })
           })
         });
     }
