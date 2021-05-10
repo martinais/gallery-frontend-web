@@ -8,14 +8,15 @@
     <button id="import-btn" v-on:click="displayImport = true">
       +
     </button>
-    <div v-bind:key="index" v-for="(pic, index) in pics">
-      {{ pic }} <a href="#" v-on:click="removePic(index)">delete</a>
+    <div v-bind:key="hash" v-for="(data, hash) in pics">
+      <img width="300" v-bind:src="pics[hash]"/>
+      <a href="#" v-on:click="removePic(pic)">delete</a>
     </div>
     <Modal v-if="displayImport" @close="displayImport = false">
       <form v-on:submit.prevent="importPic">
         <!--<input @change="updateFiles" type="file" multiple />-->
         <input id="input-upload" type="file"
-               @change="this.picFile = event.target.files[0]"/>
+               @change="selectPic"/>
         <input type="submit"/>
       </form>
     </Modal>
@@ -34,7 +35,7 @@ export default {
       slug: undefined,
       displayImport: false,
       picFile: undefined,
-      pics: [],
+      pics: {},
     }
   },
   mounted() {
@@ -45,20 +46,42 @@ export default {
     this.updatePics()
   },
   methods: {
+    selectPic() {
+      this.picFile = event.target.files[0]
+    },
     updatePics() {
       fetch(process.env.VUE_APP_BACKEND_URL + '/albums/' + this.slug + '/pics', {
         method: 'GET',
         headers: {'Authorization': 'Bearer ' + this.user.token}
-      }).then(response => response.json()).then(data => this.pics = data.pics)
+      })
+        .then(response => response.json()).then(
+          data => data.pics.map(hash => this.pics[hash] = 'default')
+        )
+        .then(() => {
+          for (const key in this.pics) {
+            fetch(process.env.VUE_APP_BACKEND_URL + '/pic/' + key, {
+              method: 'GET',
+              headers: {'Authorization': 'Bearer ' + this.user.token}
+            })
+              .then(data => {
+                data.blob().then(blob => {
+                  const reader = new FileReader();
+                  reader.onload = () => this.pics[key] = reader.result
+                  reader.readAsDataURL(blob)
+                  console.log(this.pics[key])
+                })
+              })
+          }
+        })
     },
-    removePic(index) {
+    removePic(hash) {
       fetch(process.env.VUE_APP_BACKEND_URL + '/albums/' + this.slug + '/pics', {
         method: 'PATCH',
         headers: {
           'Authorization': 'Bearer ' + this.user.token,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({'-': [this.pics[index]]})
+        body: JSON.stringify({'-': [hash]})
       }).then(() => { this.updatePics() })
     },
     importPic() {
