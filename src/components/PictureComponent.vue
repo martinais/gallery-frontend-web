@@ -1,5 +1,5 @@
 <template>
-  <div id="picture">
+  <div class="picture">
     <img v-if="content" v-bind:src="content"/>
     <p v-else>incomming ...</p>
     <a href="#" v-on:click="removePic">delete</a>
@@ -42,4 +42,11 @@ export default {
 </script>
 
 <style scoped>
+  .picture {
+    display: inline;
+    width: fit-content;
+  }
+  .picture > img {
+    width: 300px;
+  }
 </style>

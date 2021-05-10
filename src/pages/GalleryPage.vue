@@ -1,19 +1,21 @@
 <template>
   <div class="grid">
     <Header />
-    <button id="import-btn" v-on:click="displayImport = true">
-      +
-    </button>
-    <Picture :album="slug" :hash="hash" @update="updatePics"
-             v-bind:key="hash" v-for="hash in pics"/>
-    <Modal v-if="displayImport" @close="displayImport = false">
-      <form v-on:submit.prevent="importPic">
-        <!--<input @change="updateFiles" type="file" multiple />-->
-        <input id="input-upload" type="file"
-               @change="selectPic"/>
-        <input type="submit"/>
-      </form>
-    </Modal>
+    <div id="content">
+      <button id="import-btn" v-on:click="displayImport = true">
+        +
+      </button>
+      <Picture :album="slug" :hash="hash" @update="updatePics"
+               v-bind:key="hash" v-for="hash in pics"/>
+      <Modal v-if="displayImport" @close="displayImport = false">
+        <form v-on:submit.prevent="importPic">
+          <!--<input @change="updateFiles" type="file" multiple />-->
+          <input id="input-upload" type="file"
+                 @change="selectPic"/>
+          <input type="submit"/>
+        </form>
+      </Modal>
+    </div>
   </div>
 </template>
 
@@ -107,5 +109,9 @@ export default {
     font-size: 3em;
     font-weight: bolder;
     color: white;
+  }
+  #content {
+    overflow: auto;
+    white-space: nowrap;
   }
 </style>
