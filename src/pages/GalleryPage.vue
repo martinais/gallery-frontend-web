@@ -5,12 +5,18 @@
       <button id="import-btn" v-on:click="displayImport = true">
         +
       </button>
-      <Picture :height="rowHeight" :album="slug" :hash="hash"
-               @update="updatePics" v-bind:key="hash" v-for="hash in pics"/><br>
-      <Picture :height="rowHeight" :album="slug" :hash="hash"
-               @update="updatePics" v-bind:key="hash" v-for="hash in pics"/><br>
-      <Picture :height="rowHeight" :album="slug" :hash="hash"
-               @update="updatePics" v-bind:key="hash" v-for="hash in pics"/>
+      <div class="gallery-row">
+        <Picture :height="rowHeight" :album="slug" :hash="hash"
+                 @update="updatePics" v-bind:key="hash" v-for="hash in pics"/>
+      </div>
+      <div class="gallery-row">
+        <Picture :height="rowHeight" :album="slug" :hash="hash"
+                 @update="updatePics" v-bind:key="hash" v-for="hash in pics"/>
+      </div>
+      <div class="gallery-row">
+        <Picture :height="rowHeight" :album="slug" :hash="hash"
+                 @update="updatePics" v-bind:key="hash" v-for="hash in pics"/>
+      </div>
       <Modal v-if="displayImport" @close="displayImport = false">
         <form v-on:submit.prevent="importPic">
           <!--<input @change="updateFiles" type="file" multiple />-->
@@ -122,8 +128,6 @@ export default {
     font-weight: bolder;
     color: white;
   }
-  #content {
-    overflow: auto;
-    white-space: nowrap;
-  }
+  #content { overflow: auto; white-space: nowrap; }
+  .gallery-row { font-size: 0; }
 </style>

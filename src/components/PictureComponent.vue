@@ -1,9 +1,7 @@
 <template>
-  <div class="picture">
-    <img v-if="content" v-bind:src="content" :style="{ height: height+'px' }"/>
-    <p v-else>incomming ...</p>
-    <a hidden href="#" v-on:click="removePic">delete</a>
-  </div>
+  <img v-if="content" v-bind:src="content" :style="{ height: height+'px' }"/>
+  <p v-else>incomming ...</p>
+  <a hidden href="#" v-on:click="removePic">delete</a>
 </template>
 
 <script>
