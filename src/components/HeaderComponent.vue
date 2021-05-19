@@ -44,27 +44,30 @@ export default {
 <style scoped>
   .header {
     background-color: #FCE0E0;
-    max-height: 6em;
     display: grid;
     grid-template-areas:
       'logo . . message . . buttons';
   }
   .logo {
+    grid-area: logo;
     font-family: Serif;
     font-size: 4em;
-    margin: 0.2em;
-    margin-bottom: 0;
-    grid-area: logo;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
   }
   .message {
-    font-size: 2em;
-    margin: 1em auto;
     grid-area: message;
-    margin-bottom: 0;
+    font-size: 2em;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
   }
   .buttons {
     grid-area: buttons;
-    margin-bottom: 0;
+    margin: auto;
+    display: flex;
+    align-items: center;
   }
   button {
     float: right;
@@ -72,7 +75,6 @@ export default {
     border-style: hidden;
     border-radius: 4px;
     outline: none;
-    margin: 1.5em 2em;
     width: 10em;
     height: 3em;
     background: #FCE0E0;
