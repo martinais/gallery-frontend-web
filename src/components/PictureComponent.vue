@@ -1,5 +1,5 @@
 <template>
-  <img v-if="content" v-bind:src="content" :style="{ height: height+'px' }"/>
+  <img v-if="content" v-bind:src="content" :style="{height:(height-30)+'px'}"/>
   <p v-else>incomming ...</p>
   <a hidden href="#" v-on:click="removePic">delete</a>
 </template>
@@ -36,5 +36,7 @@ export default {
 </script>
 
 <style scoped>
-  .picture { display: inline; }
+  img {
+    margin: 15px;
+  }
 </style>
