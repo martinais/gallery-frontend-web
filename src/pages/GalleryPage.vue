@@ -1,12 +1,16 @@
 <template>
   <div class="grid">
     <Header />
-    <div id="content">
+    <div id="content" ref="content">
       <button id="import-btn" v-on:click="displayImport = true">
         +
       </button>
-      <Picture :album="slug" :hash="hash" @update="updatePics"
-               v-bind:key="hash" v-for="hash in pics"/>
+      <Picture :height="rowHeight" :album="slug" :hash="hash"
+               @update="updatePics" v-bind:key="hash" v-for="hash in pics"/><br>
+      <Picture :height="rowHeight" :album="slug" :hash="hash"
+               @update="updatePics" v-bind:key="hash" v-for="hash in pics"/><br>
+      <Picture :height="rowHeight" :album="slug" :hash="hash"
+               @update="updatePics" v-bind:key="hash" v-for="hash in pics"/>
       <Modal v-if="displayImport" @close="displayImport = false">
         <form v-on:submit.prevent="importPic">
           <!--<input @change="updateFiles" type="file" multiple />-->
@@ -32,7 +36,8 @@ export default {
       slug: undefined,
       displayImport: false,
       picFile: undefined,
-      pics: []
+      pics: [],
+      rowHeight: 100,
     }
   },
   mounted() {
@@ -41,8 +46,17 @@ export default {
     this.user = JSON.parse(localStorage.getItem('user'));
     if (!this.slug) document.location = '/'
     this.updatePics()
+    this.extractRowHeight()
+    window.addEventListener('resize', this.extractRowHeight)
+  },
+  unmounted() {
+    window.removeEventListener('resize', this.extractRowHeight)
   },
   methods: {
+    extractRowHeight() {
+      this.rowHeight = this.$refs.content.clientHeight / 3
+      console.log(this.rowHeight)
+    },
     selectPic() {
       this.picFile = event.target.files[0]
     },
@@ -91,9 +105,7 @@ export default {
     top: 0; left: 0; right: 0; bottom: 0;
     display: grid;
     grid-auto-rows: min-content;
-    grid-template-areas:
-      'header'
-      'content'
+    grid-template-rows: 10% 90%;
   }
   #import-btn {
     position: absolute;

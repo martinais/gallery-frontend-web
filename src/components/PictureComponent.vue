@@ -1,20 +1,16 @@
 <template>
   <div class="picture">
-    <img v-if="content" v-bind:src="content"/>
+    <img v-if="content" v-bind:src="content" :style="{ height: height+'px' }"/>
     <p v-else>incomming ...</p>
-    <a href="#" v-on:click="removePic">delete</a>
+    <a hidden href="#" v-on:click="removePic">delete</a>
   </div>
 </template>
 
 <script>
 export default {
   name: 'Picture',
-  props: { hash: String, album: String },
-  data() {
-    return {
-      content: undefined,
-    }
-  },
+  props: { hash: String, album: String, height: Number },
+  data() { return { content: undefined } },
   mounted() {
     this.user = JSON.parse(localStorage.getItem('user'));
     fetch(process.env.VUE_APP_BACKEND_URL + '/pic/' + this.hash, {
@@ -42,11 +38,5 @@ export default {
 </script>
 
 <style scoped>
-  .picture {
-    display: inline;
-    width: fit-content;
-  }
-  .picture > img {
-    width: 300px;
-  }
+  .picture { display: inline; }
 </style>
