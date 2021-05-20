@@ -1,7 +1,7 @@
 <template>
   <div class="grid">
     <Header step='login' />
-    <div class="welcome" id="welcome">
+    <div id="welcome">
       <div>Welcome to</div><br><div>Martine's Pic</div>
     </div>
     <LogForm @authenticated="connect"/>
@@ -38,27 +38,29 @@ export default {
     top: 0; left: 0; right: 0; bottom: 0;
     display: grid;
     grid-auto-rows: min-content;
-    grid-template-areas:
-      'header  header  header  header  header  header  header  header  header'
-      'welcome welcome welcome .       .       .       .       .       .     '
-      'welcome welcome welcome .       .       .       .       .       .     '
-      'welcome welcome welcome .       logform logform logform logform .     '
-      'welcome welcome welcome .       logform logform logform logform .     '
-      '.       .       .       .       logform logform logform logform .     '
-      '.       .       .       .       logform logform logform logform .     '
-      '.       .       .       .       .       .       .       .       .     '
+    grid-template-rows: 10% 10% 10% 10% 10% 10% 10% 10% 10% 10%;
+    grid-template-columns: 20% 20% 10% 10% 10% 10% 10% 10%;
   }
-  .header { grid-area: header; }
-  .welcome { grid-area: welcome; font-family: serif; }
-  .logform { grid-area: logform; }
+  #header {
+    grid-column-start: 1;
+    grid-column-end: -1;
+  }
   #welcome {
+    grid-row-start: 2;
+    grid-column-end: span 3;
     text-align: left;
     font-size: 5em;
+    font-family: serif;
     margin-top: 0.4em;
     margin-left: 1em;
   }
   #welcome > div {
     margin: 0;
     display: inline;
+  }
+  #logform {
+    grid-column-start: 4;
+    grid-column-end: span 4;
+    grid-row-start: 5;
   }
 </style>

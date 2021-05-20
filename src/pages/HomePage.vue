@@ -105,15 +105,9 @@ export default {
     top: 0; left: 0; right: 0; bottom: 0;
     display: grid;
     grid-auto-rows: min-content;
-    grid-template-areas:
-      'header'
-      'content'
+    grid-template-rows: 10% 90%;
   }
-  .header { grid-area: header; }
   .content {
-    grid-area: content;
-    grid-row-start: 2;
-    grid-row-end: 10;
     font-size: 1.5em;
     overflow-y: scroll;
   }

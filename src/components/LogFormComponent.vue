@@ -1,5 +1,5 @@
 <template>
-  <div class="logform">
+  <div id="logform">
     <div class="formbox">
       <h1>Log In</h1>
       <form v-on:submit.prevent="handleSubmit">
@@ -62,7 +62,6 @@ export default {
 
 <style scoped>
   .formbox {
-    max-width: 500px;
     background-color: #FCE0E0;
     border-radius: 15px;
     padding: 2em;
