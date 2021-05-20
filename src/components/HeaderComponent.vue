@@ -1,6 +1,6 @@
 <template>
   <div class="header">
-    <span class="logo">M.</span>
+    <span class="logo"><a href="/">M.</a></span>
     <div v-if="user" class="message">Welcome {{ user.name.toUpperCase() }}</div>
     <div class="buttons">
       <button v-if="user" v-on:click="disconnect" class="disconnectbtn">
@@ -42,6 +42,23 @@ export default {
 </script>
 
 <style scoped>
+  a {
+    text-decoration: none;
+    color: black;
+  }
+  button {
+    float: right;
+    display: inline;
+    border-style: hidden;
+    border-radius: 4px;
+    outline: none;
+    width: 10em;
+    height: 3em;
+    background: #FCE0E0;
+    cursor: pointer;
+    font-size: 1em;
+    box-shadow: 8px 8px 16px #E5CBCB, -8px -8px 16px rgba(255, 241, 241, 0.6);
+  }
   .header {
     background-color: #FCE0E0;
     display: grid;
@@ -68,19 +85,6 @@ export default {
     margin: auto;
     display: flex;
     align-items: center;
-  }
-  button {
-    float: right;
-    display: inline;
-    border-style: hidden;
-    border-radius: 4px;
-    outline: none;
-    width: 10em;
-    height: 3em;
-    background: #FCE0E0;
-    cursor: pointer;
-    font-size: 1em;
-    box-shadow: 8px 8px 16px #E5CBCB, -8px -8px 16px rgba(255, 241, 241, 0.6);
   }
   .selected {
     box-shadow: inset 8px 8px 16px #E6CBCB, inset -8px -8px 16px rgba(255, 241, 241, 0.6);
