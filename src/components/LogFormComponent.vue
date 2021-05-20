@@ -6,8 +6,8 @@
         <input :class="{ softInput: emailed }" :disabled="emailed"
             v-model="userName" placeholder="Enter your Pseudo"
             type="text" id="pseudoField" >
-        <input v-if="emailed" v-model="pinCode"
-          placeholder="Enter the mail code" type="text">
+        <input :class="{ softInput: !emailed }" :disabled="!emailed"
+          v-model="pinCode" placeholder="Enter the mail code" type="text">
         <button type="submit">{{ submitMsg }}</button>
       </form>
     </div>
@@ -95,7 +95,5 @@ export default {
     box-shadow: inset 8px 8px 16px #E6CBCB, inset -8px -8px 16px rgba(255, 241, 241, 0.6);
 
   }
-  .softInput {
-    box-shadow: none;
-  }
+  .softInput { box-shadow: none; }
 </style>
