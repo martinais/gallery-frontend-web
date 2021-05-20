@@ -3,9 +3,11 @@
     <div class="formbox">
       <h1>Log In</h1>
       <form v-on:submit.prevent="handleSubmit">
-        <input :class="{ softInput: emailed }" :disabled="emailed"
-            v-model="userName" placeholder="Enter your Pseudo"
-            type="text" id="pseudoField" >
+        <div @click="reset">
+          <input :class="{ softInput: emailed }" :disabled="emailed"
+              v-model="userName" placeholder="Enter your Pseudo"
+              type="text" id="pseudoField">
+        </div>
         <input :class="{ softInput: !emailed }" :disabled="!emailed"
           v-model="pinCode" placeholder="Enter the mail code" type="text">
         <button type="submit">{{ submitMsg }}</button>
@@ -27,6 +29,10 @@ export default {
     }
   },
   methods: {
+    reset() {
+      this.emailed = false
+      this.pinCode = ''
+    },
     handleSubmit() {
       if (!this.emailed) this.login();
       else this.access();
