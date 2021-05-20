@@ -5,26 +5,15 @@
       <button id="import-btn" v-on:click="displayImport = true">
         +
       </button>
-      <div class="gallery-row">
+      <div v-for="j in [0,1,2]" v-bind:key="j" class="gallery-row">
         <Picture :height="rowHeight" :album="slug" :hash="hash"
            @update="updatePics" v-bind:key="hash"
-           v-for="hash in pics[0]"/>
-      </div>
-      <div class="gallery-row">
-        <Picture :height="rowHeight" :album="slug" :hash="hash"
-           @update="updatePics" v-bind:key="hash"
-           v-for="hash in pics[1]"/>
-      </div>
-      <div class="gallery-row">
-        <Picture :height="rowHeight" :album="slug" :hash="hash"
-           @update="updatePics" v-bind:key="hash"
-           v-for="hash in pics[2]"/>
+           v-for="hash in pics[j]"/>
       </div>
       <Modal v-if="displayImport" @close="displayImport = false">
         <form v-on:submit.prevent="importPic">
           <!--<input @change="updateFiles" type="file" multiple />-->
-          <input id="input-upload" type="file"
-                 @change="selectPic"/>
+          <input id="input-upload" type="file" @change="selectPic"/>
           <input type="submit"/>
         </form>
       </Modal>
@@ -69,14 +58,9 @@ export default {
       this.picFile = event.target.files[0]
     },
     updatePics() {
-      http('GET', '/albums/' + this.slug + '/pics')
-        .then(response => response.json()).then(data => {
-          this.pics = [
-            data.pics.filter((_,i) => i%3 == 0),
-            data.pics.filter((_,i) => i%3 == 1),
-            data.pics.filter((_,i) => i%3 == 2),
-          ]
-        })
+      const x = (m,n) => m.filter((_,i) => i%3 == n)
+      http('GET', '/albums/' + this.slug + '/pics').then(r => r.json())
+        .then(d => this.pics = [x(d.pics, 0), x(d.pics, 1), x(d.pics, 2)])
     },
     importPic() {
       this.picFile.arrayBuffer()
