@@ -7,15 +7,18 @@
       </button>
       <div class="gallery-row">
         <Picture :height="rowHeight" :album="slug" :hash="hash"
-                 @update="updatePics" v-bind:key="hash" v-for="hash in pics"/>
+           @update="updatePics" v-bind:key="hash"
+           v-for="hash in pics[0]"/>
       </div>
       <div class="gallery-row">
         <Picture :height="rowHeight" :album="slug" :hash="hash"
-                 @update="updatePics" v-bind:key="hash" v-for="hash in pics"/>
+           @update="updatePics" v-bind:key="hash"
+           v-for="hash in pics[1]"/>
       </div>
       <div class="gallery-row">
         <Picture :height="rowHeight" :album="slug" :hash="hash"
-                 @update="updatePics" v-bind:key="hash" v-for="hash in pics"/>
+           @update="updatePics" v-bind:key="hash"
+           v-for="hash in pics[2]"/>
       </div>
       <Modal v-if="displayImport" @close="displayImport = false">
         <form v-on:submit.prevent="importPic">
@@ -61,7 +64,6 @@ export default {
   methods: {
     extractRowHeight() {
       this.rowHeight = this.$refs.content.clientHeight / 3
-      console.log(this.rowHeight)
     },
     selectPic() {
       this.picFile = event.target.files[0]
@@ -70,7 +72,14 @@ export default {
       fetch(process.env.VUE_APP_BACKEND_URL + '/albums/' + this.slug + '/pics', {
         method: 'GET',
         headers: {'Authorization': 'Bearer ' + this.user.token}
-      }).then(response => response.json()).then(data => this.pics = data.pics)
+      }).then(response => response.json()).then(data => {
+        this.pics = [
+          data.pics.filter((_,i) => i%3 == 0),
+          data.pics.filter((_,i) => i%3 == 1),
+          data.pics.filter((_,i) => i%3 == 2),
+        ]
+        console.log(this.pics)
+      })
     },
     importPic() {
       this.picFile.arrayBuffer()
@@ -129,5 +138,5 @@ export default {
     color: white;
   }
   #content { overflow: auto; white-space: nowrap; }
-  .gallery-row { font-size: 0; }
+  .gallery-row { font-size: 0; text-align: left; }
 </style>
