@@ -1,6 +1,6 @@
 <template>
-  <div class="header">
-    <span class="logo"><a href="/">M.</a></span>
+  <div id="header" @disconnect="disconnect">
+    <span class="logo"><a href="/home">M.</a></span>
     <div v-if="user" class="message">Welcome {{ user.name.toUpperCase() }}</div>
     <div class="buttons">
       <button v-if="user" v-on:click="disconnect" class="disconnectbtn">
@@ -52,7 +52,7 @@ export default {
     font-size: 1em;
     box-shadow: 8px 8px 16px #E5CBCB, -8px -8px 16px rgba(255, 241, 241, 0.6);
   }
-  .header {
+  #header {
     background-color: #FCE0E0;
     display: grid;
     grid-template-areas:
