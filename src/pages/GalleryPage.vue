@@ -33,6 +33,7 @@
 </template>
 
 <script>
+import { http } from '../helpers/http.js'
 import Header from '../components/HeaderComponent.vue';
 import Modal from '../components/ModalComponent.vue';
 import Picture from '../components/PictureComponent.vue';
@@ -52,7 +53,6 @@ export default {
   mounted() {
     const params = new URLSearchParams(location.search);
     this.slug = params.get('slug')
-    this.user = JSON.parse(localStorage.getItem('user'));
     if (!this.slug) document.location = '/'
     this.updatePics()
     this.extractRowHeight()
@@ -69,17 +69,14 @@ export default {
       this.picFile = event.target.files[0]
     },
     updatePics() {
-      fetch(process.env.VUE_APP_BACKEND_URL + '/albums/' + this.slug + '/pics', {
-        method: 'GET',
-        headers: {'Authorization': 'Bearer ' + this.user.token}
-      }).then(response => response.json()).then(data => {
-        this.pics = [
-          data.pics.filter((_,i) => i%3 == 0),
-          data.pics.filter((_,i) => i%3 == 1),
-          data.pics.filter((_,i) => i%3 == 2),
-        ]
-        console.log(this.pics)
-      })
+      http('GET', '/albums/' + this.slug + '/pics')
+        .then(response => response.json()).then(data => {
+          this.pics = [
+            data.pics.filter((_,i) => i%3 == 0),
+            data.pics.filter((_,i) => i%3 == 1),
+            data.pics.filter((_,i) => i%3 == 2),
+          ]
+        })
     },
     importPic() {
       this.picFile.arrayBuffer()
@@ -89,20 +86,17 @@ export default {
           const hash = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
           const fd = new FormData();
           fd.append('file', this.picFile);
+          const user = JSON.parse(localStorage.getItem('user'));
           fetch(process.env.VUE_APP_BACKEND_URL + '/pic/' + hash, {
             method: 'PUT',
-            headers: {'Authorization': 'Bearer ' + this.user.token},
+            headers: {'Authorization': 'Bearer ' + user.token},
             body: fd
           }).then(response => {
             if (response.status != 204) return
-            fetch(process.env.VUE_APP_BACKEND_URL + '/albums/' + this.slug + '/pics', {
-              method: 'PATCH',
-              headers: {
-                'Authorization': 'Bearer ' + this.user.token,
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({'+': [hash]})
-            }).then(() => { this.displayImport = false; this.updatePics() })
+            http('PATCH', '/albums/'+this.slug+'/pics', {'+':[hash]}).then(()=>{
+              this.displayImport = false
+              this.updatePics()
+            })
           })
         });
     }

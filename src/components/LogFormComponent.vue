@@ -15,6 +15,7 @@
 </template>
 
 <script>
+import { httpNoAuth } from '../helpers/http.js'
 export default {
   name: 'LogForm',
   data() {
@@ -31,22 +32,14 @@ export default {
       else this.access();
     },
     login() {
-      fetch(process.env.VUE_APP_BACKEND_URL + '/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({'name':this.userName})
-      }).then(() => {
+      httpNoAuth('POST', '/login', {'name':this.userName}).then(() => {
         this.emailed = true;
         this.submitMsg = 'Connect me !';
       });
     },
     access() {
       if (this.pinCode) {
-        fetch(process.env.VUE_APP_BACKEND_URL + '/token', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({'code':this.pinCode})
-        }).then(data => {
+        httpNoAuth('POST', '/token', {'code':this.pinCode}).then(data => {
           if (data.status == 201) {
             console.log("LOGIN SUCCESS");
             data.json().then(data => {

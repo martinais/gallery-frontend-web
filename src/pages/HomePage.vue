@@ -21,6 +21,7 @@
 </template>
 
 <script>
+import { http } from '../helpers/http.js'
 import Header from '../components/HeaderComponent.vue';
 import AlbumTile from '../components/AlbumTileComponent.vue';
 import Modal from '../components/ModalComponent.vue';
@@ -37,36 +38,21 @@ export default {
     }
   },
   mounted() {
-    this.user = JSON.parse(localStorage.getItem('user'));
-    fetch(process.env.VUE_APP_BACKEND_URL + '/albums', {
-      headers: {'Authorization': 'Bearer ' + this.user.token},
-    }).then(response => {
-      if (response.status == 200)
-        response.json().then(albums => this.albums = albums);
+    http('GET', '/albums').then(r => {
+      if (r.status == 200) r.json().then(albums => this.albums = albums);
     });
   },
   methods: {
     navigateAlbum: (slug) => document.location = '/album?slug=' + slug,
     createAlbum() {
-      fetch(process.env.VUE_APP_BACKEND_URL + '/albums', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + this.user.token
-        },
-        body: JSON.stringify({'name':this.albumName})
-      }).then(response => {
-        if (response.status == 201)
-          response.json().then(album => this.albums.push(album));
+      http('POST', '/albums', {'name':this.albumName}).then(r => {
+        if (r.status == 201) r.json().then(album => this.albums.push(album));
         this.albumCreation = false;
       });
     },
     removeAlbum(index) {
       let album = this.albums[index];
-      fetch(process.env.VUE_APP_BACKEND_URL + '/albums/' + album.slug, {
-        method: 'DELETE',
-        headers: {'Authorization': 'Bearer ' + this.user.token},
-      }).then(response => {
+      http('DELETE', '/albums/' + album.slug).then(response => {
         if (response.status == 204) this.albums.splice(index, 1);
       });
     }

@@ -21,14 +21,7 @@
 <script>
 export default {
   name: 'Header',
-  props: {
-  },
-  data() {
-    return {
-      step: undefined,
-      user: undefined
-    }
-  },
+  data: () => { return { step: undefined, user: undefined } },
   mounted() {
     this.user = JSON.parse(localStorage.getItem('user'));
   },
