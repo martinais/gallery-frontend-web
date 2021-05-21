@@ -1,7 +1,7 @@
 <template>
   <div class="grid">
     <Header />
-    <div id="content" ref="content">
+    <div id="content" ref="content" @wheel="handleScroll">
       <button id="import-btn" v-on:click="displayImport = true">
         +
       </button>
@@ -51,6 +51,9 @@ export default {
     window.removeEventListener('resize', this.extractRowHeight)
   },
   methods: {
+    handleScroll(event) {
+      this.$refs.content.scrollBy(event.deltaY,0)
+    },
     extractRowHeight() {
       this.rowHeight = this.$refs.content.clientHeight / 3
     },
