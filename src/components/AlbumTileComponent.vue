@@ -11,7 +11,7 @@
         <div class="album-tile-bottom">
           <div class="album-tile-infos">
             <div class="album-tile-title">{{ album.name }}</div><br>
-            <div class="album-tile-count">XXX photos</div>
+            <div class="album-tile-count">{{ album.count }} photos</div>
           </div>
         </div>
       </div>
