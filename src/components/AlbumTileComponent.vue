@@ -2,7 +2,7 @@
   <div>
     <div v-if="album">
       <div class="album-tile">
-        <div class="album-tile-top">
+        <div class="album-tile-top" :style="{ backgroundImage: preview }">
           <a class="album-tile-delete" href="#"
              v-on:click.stop="$emit('remove', index)">
             <font-awesome-icon :icon="['fa', 'trash']" />
@@ -25,9 +25,24 @@
 </template>
 
 <script>
+import { http } from '../helpers/http.js'
+
 export default {
   name: 'AlbumTile',
   props: { album: Object, index: Number },
+  data() { return { preview: "url('/album-default.jpg')" } },
+  mounted() {
+    if (this.album) {
+      const hash = this.album.preview
+      if (hash) {
+        http('GET', '/pic/' + hash).then(data => data.blob().then(blob => {
+          const reader = new FileReader();
+          reader.onload = () => this.preview = 'url(' + reader.result + ')'
+          reader.readAsDataURL(blob)
+        }))
+      }
+    }
+  }
 }
 </script>
 
@@ -49,7 +64,6 @@ export default {
   .album-tile-top {
     position: relative;
     height: 60%;
-    background-image: url('/album-default.jpg');
     background-size: cover;
   }
   .album-tile-delete {
