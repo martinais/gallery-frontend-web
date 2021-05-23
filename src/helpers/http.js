@@ -21,3 +21,11 @@ export function httpNoAuth(method, path, body) {
     body: JSON.stringify(body)
   })
 }
+
+export function httpBuildPic(hash, callback) {
+  http('GET', '/pic/' + hash).then(data => data.blob().then(blob => {
+    const reader = new FileReader();
+    reader.onload = () => callback(reader.result)
+    reader.readAsDataURL(blob)
+  }))
+}

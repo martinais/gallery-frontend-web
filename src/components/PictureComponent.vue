@@ -5,18 +5,14 @@
 </template>
 
 <script>
-import { http } from '../helpers/http.js'
+import { http, httpBuildPic } from '../helpers/http.js'
 
 export default {
   name: 'Picture',
   props: { hash: String, album: String, height: Number },
   data() { return { content: undefined } },
   mounted() {
-    http('GET', '/pic/' + this.hash).then(data => data.blob().then(blob => {
-      const reader = new FileReader();
-      reader.onload = () => this.content = reader.result
-      reader.readAsDataURL(blob)
-    }))
+    httpBuildPic(this.hash, result => this.content = result)
   },
   methods: {
     removePic() {

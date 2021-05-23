@@ -25,23 +25,15 @@
 </template>
 
 <script>
-import { http } from '../helpers/http.js'
+import { httpBuildPic } from '../helpers/http.js'
 
 export default {
   name: 'AlbumTile',
   props: { album: Object, index: Number },
   data() { return { preview: "url('/album-default.jpg')" } },
   mounted() {
-    if (this.album) {
-      const hash = this.album.preview
-      if (hash) {
-        http('GET', '/pic/' + hash).then(data => data.blob().then(blob => {
-          const reader = new FileReader();
-          reader.onload = () => this.preview = 'url(' + reader.result + ')'
-          reader.readAsDataURL(blob)
-        }))
-      }
-    }
+    if (this.album && this.album.preview)
+      httpBuildPic(this.album.preview, r => this.preview = 'url(' + r + ')')
   }
 }
 </script>
