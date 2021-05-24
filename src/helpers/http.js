@@ -14,6 +14,32 @@ export function http(method, path, body) {
   })
 }
 
+export function httpUpload(file) {
+  return hashFile(file).then(hash => httpSendFile(hash, file))
+}
+
+function hashFile(file) {
+ return file.arrayBuffer()
+    .then(buffer => window.crypto.subtle.digest('SHA-1', buffer))
+    .then(hBuffer => Array.from(new Uint8Array(hBuffer)))
+    .then(hArray => hArray.map(b => b.toString(16).padStart(2, '0')).join(''))
+}
+
+function httpSendFile(hash, file) {
+  const fd = new FormData()
+  fd.append('file', file)
+  const user = JSON.parse(localStorage.getItem('user'));
+  return fetch(process.env.VUE_APP_BACKEND_URL + '/pic/' + hash, {
+    method: 'PUT',
+    headers: {'Authorization': 'Bearer ' + user.token},
+    body: fd
+  }).then(response => {
+    if (response.status == 401)
+      document.getElementById('header').dispatchEvent(new Event('disconnect'))
+    return hash
+  })
+}
+
 export function httpNoAuth(method, path, body) {
   return fetch(process.env.VUE_APP_BACKEND_URL + path, {
     method: method,

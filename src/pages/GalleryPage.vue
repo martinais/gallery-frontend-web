@@ -11,9 +11,8 @@
            v-for="hash in pics[j]"/>
       </div>
       <Modal v-if="displayImport" @close="displayImport = false">
-        <form v-on:submit.prevent="importPic">
-          <!--<input @change="updateFiles" type="file" multiple />-->
-          <input id="input-upload" type="file" @change="selectPic"/>
+        <form v-on:submit.prevent="uploadPics">
+          <input @change="selectPics" type="file" multiple />
           <input type="submit"/>
         </form>
       </Modal>
@@ -22,7 +21,7 @@
 </template>
 
 <script>
-import { http } from '../helpers/http.js'
+import { http, httpUpload } from '../helpers/http.js'
 import Header from '../components/HeaderComponent.vue';
 import Modal from '../components/ModalComponent.vue';
 import Picture from '../components/PictureComponent.vue';
@@ -34,7 +33,9 @@ export default {
     return {
       slug: undefined,
       displayImport: false,
-      picFile: undefined,
+      //picFile: undefined,
+      uploadQueue: [],
+      uploadProgress: [],
       pics: [],
       rowHeight: 100,
     }
@@ -57,36 +58,32 @@ export default {
     extractRowHeight() {
       this.rowHeight = this.$refs.content.clientHeight / 3
     },
-    selectPic() {
-      this.picFile = event.target.files[0]
+    selectPics() {
+      this.uploadQueue = event.target.files
     },
     updatePics() {
       const x = (m,n) => m.filter((_,i) => i%3 == n)
       http('GET', '/albums/' + this.slug + '/pics').then(r => r.json())
         .then(d => this.pics = [x(d.pics, 0), x(d.pics, 1), x(d.pics, 2)])
     },
-    importPic() {
-      this.picFile.arrayBuffer()
-        .then(buffer => window.crypto.subtle.digest('SHA-1', buffer))
-        .then(hashBuffer => {
-          const hashArray =  Array.from(new Uint8Array(hashBuffer));
-          const hash = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-          const fd = new FormData();
-          fd.append('file', this.picFile);
-          const user = JSON.parse(localStorage.getItem('user'));
-          fetch(process.env.VUE_APP_BACKEND_URL + '/pic/' + hash, {
-            method: 'PUT',
-            headers: {'Authorization': 'Bearer ' + user.token},
-            body: fd
-          }).then(response => {
-            if (response.status != 204) return
-            http('PATCH', '/albums/'+this.slug+'/pics', {'+':[hash]}).then(()=>{
-              this.displayImport = false
-              this.updatePics()
-            })
-          })
-        });
-    }
+    uploadPics() {
+      for (let i = 0; i < this.uploadQueue.length; i++) {
+        httpUpload(this.uploadQueue[i]).then(hash => this.progress(hash))
+      }
+    },
+    progress(hash) {
+      // TODO : update progress bar
+      this.uploadProgress.push(hash)
+      if (this.uploadProgress.length == this.uploadQueue.length)
+        this.updateAlbum()
+    },
+    updateAlbum() {
+      const data = { '+': this.uploadProgress }
+      http('PATCH', '/albums/'+this.slug+'/pics', data).then(()=>{
+        this.displayImport = false
+        this.updatePics()
+      })
+    },
   }
 }
 </script>
