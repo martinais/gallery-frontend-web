@@ -1,24 +1,16 @@
 # gallery-frontend-web
 
-## Project setup
-```
-npm install
+## development setup
+
+Start app:
+```bash
+make up && make run
 ```
 
-### Compiles and hot-reloads for development
+Register your user:
+```bash
+curl http://localhost:5000/signin \
+  -X POST \
+  -d '{"name":"tristan","email":"tristan@tic.sh"}' \
+  -H 'Content-Type: application/json'
 ```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
