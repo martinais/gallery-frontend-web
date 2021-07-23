@@ -17,6 +17,14 @@
           <input @change="selectPics" type="file" multiple />
           <input type="submit"/>
         </form>
+        <table>
+          <tbody>
+            <tr v-for="(file, index) in uploadQueue" v-bind:key="file.name">
+              <td>{{ file.name }}</td>
+              <td><button v-on:click="removeUpload(index)">remove</button></td>
+            </tr>
+          </tbody>
+        </table>
       </Modal>
       <Carousel v-if="carouselPtr" @close="carouselPtr = undefined">
         <Picture :height="800" :album="slug" :hash="carouselPtr"
@@ -67,7 +75,7 @@ export default {
       this.rowHeight = this.$refs.content.clientHeight / 3
     },
     selectPics() {
-      this.uploadQueue = event.target.files
+      this.uploadQueue = Array.from(event.target.files)
     },
     updatePics() {
       const x = (m,n) => m.filter((_,i) => i%3 == n)
@@ -79,11 +87,16 @@ export default {
         httpUpload(this.uploadQueue[i]).then(hash => this.progress(hash))
       }
     },
+    removeUpload(index) {
+      this.uploadQueue.splice(index, 1);
+    },
     progress(hash) {
       // TODO : update progress bar
       this.uploadProgress.push(hash)
-      if (this.uploadProgress.length == this.uploadQueue.length)
-        this.updateAlbum()
+      if (this.uploadProgress.length == this.uploadQueue.length) {
+        this.updateAlbum();
+        this.uploadQueue = [];
+      }
     },
     updateAlbum() {
       const data = { '+': this.uploadProgress }
