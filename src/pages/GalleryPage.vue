@@ -2,20 +2,26 @@
   <div class="grid">
     <Header />
     <div id="content" ref="content" @wheel="handleScroll">
-      <button id="import-btn" v-on:click="displayImport = true">
+      <button id="import-btn" v-on:click="showImport = true">
         +
       </button>
       <div v-for="j in [0,1,2]" v-bind:key="j" class="gallery-row">
-        <Picture :height="rowHeight" :album="slug" :hash="hash"
-           @update="updatePics" v-bind:key="hash"
-           v-for="hash in pics[j]"/>
+        <div v-on:click="carouselPtr = hash" style="display: inline-block"
+           v-bind:key="hash" v-for="hash in pics[j]">
+          <Picture :height="rowHeight" :album="slug" :hash="hash"
+            @update="updatePics"/>
+        </div>
       </div>
-      <Modal v-if="displayImport" @close="displayImport = false">
+      <Modal v-if="showImport" @close="showImport = false">
         <form v-on:submit.prevent="uploadPics">
           <input @change="selectPics" type="file" multiple />
           <input type="submit"/>
         </form>
       </Modal>
+      <Carousel v-if="carouselPtr" @close="carouselPtr = undefined">
+        <Picture :height="800" :album="slug" :hash="carouselPtr"
+           @update="updatePics" v-bind:key="hash"/>
+      </Carousel>
     </div>
   </div>
 </template>
@@ -24,15 +30,17 @@
 import { http, httpUpload } from '../helpers/http.js'
 import Header from '../components/HeaderComponent.vue';
 import Modal from '../components/ModalComponent.vue';
+import Carousel from '../components/CarouselComponent.vue';
 import Picture from '../components/PictureComponent.vue';
 
 export default {
   name: 'Gallery',
-  components: { Header, Modal, Picture },
+  components: { Header, Modal, Picture, Carousel },
   data() {
     return {
       slug: undefined,
-      displayImport: false,
+      showImport: false,
+      carouselPtr: undefined,
       //picFile: undefined,
       uploadQueue: [],
       uploadProgress: [],
@@ -80,7 +88,7 @@ export default {
     updateAlbum() {
       const data = { '+': this.uploadProgress }
       http('PATCH', '/albums/'+this.slug+'/pics', data).then(()=>{
-        this.displayImport = false
+        this.showImport = false
         this.updatePics()
       })
     },
