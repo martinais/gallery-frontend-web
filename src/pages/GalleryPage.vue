@@ -14,7 +14,7 @@
       </div>
       <Modal v-if="showImport" @close="showImport = false">
         <form v-on:submit.prevent="uploadPics">
-          <input @change="selectPics" type="file" multiple />
+          <input @change="selectPics" type="file" multiple accept="image/*" />
           <input type="submit"/>
         </form>
         <table>
@@ -92,7 +92,7 @@ export default {
     },
     progress(hash) {
       // TODO : update progress bar
-      this.uploadProgress.push(hash)
+      this.uploadProgress.push(hash);
       if (this.uploadProgress.length == this.uploadQueue.length) {
         this.updateAlbum();
         this.uploadQueue = [];
@@ -101,8 +101,8 @@ export default {
     updateAlbum() {
       const data = { '+': this.uploadProgress }
       http('PATCH', '/albums/'+this.slug+'/pics', data).then(()=>{
-        this.showImport = false
-        this.updatePics()
+        this.showImport = false;
+        this.updatePics();
       })
     },
   }
