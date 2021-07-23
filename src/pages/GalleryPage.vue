@@ -20,7 +20,7 @@
       </Modal>
       <Carousel v-if="carouselPtr" @close="carouselPtr = undefined">
         <Picture :height="800" :album="slug" :hash="carouselPtr"
-           @update="updatePics" v-bind:key="hash"/>
+           @update="updatePics"/>
       </Carousel>
     </div>
   </div>

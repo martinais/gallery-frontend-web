@@ -3,10 +3,10 @@
     <div id="modal-content">
       <font-awesome-icon id="modal-cancel" 
         :icon="['fa', 'times']" v-on:click="$emit('close')" />
-      <font-awesome-icon id="modal-right" class="angle"
+      <!--<font-awesome-icon id="modal-right" class="angle"
         :icon="['fa', 'angle-right']" v-on:click="$emit('close')" />
       <font-awesome-icon id="modal-left" class="angle"
-        :icon="['fa', 'angle-left']" v-on:click="$emit('close')" />
+      :icon="['fa', 'angle-left']" v-on:click="$emit('close')" />-->
       <slot></slot>
  </div>
   </div>

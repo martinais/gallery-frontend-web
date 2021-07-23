@@ -1,7 +1,11 @@
 <template>
-  <img v-if="content" v-bind:src="content" :style="{height:(height-30)+'px'}"/>
-  <p v-else>incomming ...</p>
-  <a hidden href="#" v-on:click="removePic">delete</a>
+  <div style="position: relative">
+    <a id="trash" href="#" v-on:click.stop="removePic">
+      <font-awesome-icon :icon="['fa', 'trash']" />
+    </a>
+    <img v-if="content" v-bind:src="content" :style="{height:(height-30)+'px'}"/>
+    <p v-else>incomming ...</p>
+  </div>
 </template>
 
 <script>
@@ -25,4 +29,12 @@ export default {
 
 <style scoped>
   img { margin: 15px; }
+  #trash:hover { color: red }
+  #trash {
+    position: absolute;
+    font-size: 2rem;
+    right: 30px;
+    top: 30px;
+    color: white;
+  }
 </style>
