@@ -13,18 +13,7 @@
         </div>
       </div>
       <Modal v-if="showImport" @close="showImport = false">
-        <form v-on:submit.prevent="uploadPics">
-          <input @change="selectPics" type="file" multiple accept="image/*" />
-          <input type="submit"/>
-        </form>
-        <table>
-          <tbody>
-            <tr v-for="(file, index) in uploadQueue" v-bind:key="file.name">
-              <td>{{ file.name }}</td>
-              <td><button v-on:click="removeUpload(index)">remove</button></td>
-            </tr>
-          </tbody>
-        </table>
+        <NewPicComponent @added="updatePics"/>
       </Modal>
       <Carousel v-if="carouselPtr">
         <Picture :height="800" :album="slug" :hash="carouselPtr"
@@ -35,25 +24,23 @@
 </template>
 
 <script>
-import { http, httpUpload } from '../helpers/http.js'
+import { http } from '../helpers/http.js'
 import Header from '../components/HeaderComponent.vue';
 import Modal from '../components/ModalComponent.vue';
 import Carousel from '../components/CarouselComponent.vue';
 import Picture from '../components/PictureComponent.vue';
+import NewPicComponent from '../components/NewPicComponent.vue';
 
 export default {
   name: 'Gallery',
-  components: { Header, Modal, Picture, Carousel },
+  components: { Header, Modal, Picture, Carousel, NewPicComponent },
   data() {
     return {
       slug: undefined,
       showImport: false,
       carouselPtr: undefined,
-      //picFile: undefined,
-      uploadQueue: [],
-      uploadProgress: [],
-      pics: [],
       rowHeight: 100,
+      pics: [],
     }
   },
   mounted() {
@@ -74,42 +61,17 @@ export default {
     extractRowHeight() {
       this.rowHeight = this.$refs.content.clientHeight / 3
     },
-    selectPics() {
-      this.uploadQueue = Array.from(event.target.files)
-    },
     updatePics() {
+      this.showImport = false;
       const x = (m,n) => m.filter((_,i) => i%3 == n)
       http('GET', '/albums/' + this.slug + '/pics').then(r => r.json())
         .then(d => this.pics = [x(d.pics, 0), x(d.pics, 1), x(d.pics, 2)])
-    },
-    uploadPics() {
-      for (let i = 0; i < this.uploadQueue.length; i++) {
-        httpUpload(this.uploadQueue[i]).then(hash => this.progress(hash))
-      }
-    },
-    removeUpload(index) {
-      this.uploadQueue.splice(index, 1);
-    },
-    progress(hash) {
-      // TODO : update progress bar
-      this.uploadProgress.push(hash);
-      if (this.uploadProgress.length == this.uploadQueue.length) {
-        this.updateAlbum();
-        this.uploadQueue = [];
-      }
-    },
-    updateAlbum() {
-      const data = { '+': this.uploadProgress }
-      http('PATCH', '/albums/'+this.slug+'/pics', data).then(()=>{
-        this.showImport = false;
-        this.updatePics();
-      })
     },
   }
 }
 </script>
 
-<style scoped>
+<style scoped> 
   .grid {
     font-family: sans-serif;
     text-align: center;

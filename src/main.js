@@ -5,12 +5,13 @@ import HomePage from './pages/HomePage.vue'
 import GalleryPage from './pages/GalleryPage.vue'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faTrash, faCheck, faTimes, faPlus, faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons'
+import { faTrash, faCheck, faTimes, faPlus, faAngleLeft, faAngleRight, faImages } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 library.add(faTrash)
 library.add(faCheck)
 library.add(faTimes)
+library.add(faImages)
 library.add(faPlus)
 library.add(faAngleLeft)
 library.add(faAngleRight)

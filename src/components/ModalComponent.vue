@@ -32,7 +32,7 @@ export default {
     background-color: #f6f6f6;
     width: 60%;
     margin: 5% auto;
-    padding: 1em;
+    padding: 10px;
     animation-name: animatetop;
     animation-duration: 0.4s;
   }
