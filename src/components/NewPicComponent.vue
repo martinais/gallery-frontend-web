@@ -1,25 +1,35 @@
 <template>
   <form v-on:submit.prevent="uploadPics">
     <h2>Add new pictures</h2>
-    <label for="file-chooser" class="custom-file-chooser">
+    <label v-if="!uploadQueue.length" for="file-chooser" class="custom-file-chooser">
       <p>Click to add pictures or drag from your computer.</p>
       <font-awesome-icon id="image-icon" :icon="['fa', 'images']"/>
+    </label>
+    <label v-else for="file-chooser" class="custom-file-chooser small-file-chooser">
+      <font-awesome-icon id="image-icon" :icon="['fa', 'images']"/>
+      <p>Click to add pictures or drag from your computer.</p>
     </label>
     <input id="file-chooser" type="file" multiple accept="image/*"
        @change="selectPics"/>
     <br>
+    <div id="table-wrapper">
+      <table cellspacing="0" cellpadding="0">
+        <tbody>
+          <tr v-for="(file, index) in uploadQueue" v-bind:key="file.name">
+            <td class="left-cell">{{ file.name }}</td>
+            <td class="right-cell">
+              <a href="#" v-on:click.prevent="removeUpload(index)">
+                <font-awesome-icon :icon="['fa', 'trash']" />
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     <div id="button-wrapper">
-      <input type="submit"/>
+      <input type="submit" value="Add Pics"/>
     </div>
   </form>
-  <table>
-    <tbody>
-      <tr v-for="(file, index) in uploadQueue" v-bind:key="file.name">
-        <td>{{ file.name }}</td>
-        <td><button v-on:click="removeUpload(index)">remove</button></td>
-      </tr>
-    </tbody>
-  </table>
 </template>
 
 <script>
@@ -57,7 +67,6 @@ export default {
     updateAlbum() {
       const data = { '+': this.uploadProgress }
       http('PATCH', '/albums/'+this.slug+'/pics', data).then(()=>{
-        this.showImport = false;
         this.$emit('added');
       })
     },
@@ -71,6 +80,11 @@ export default {
 </script>
 
 <style scoped>
+  a { 
+    color: #949494;
+    text-decoration: none;
+  }
+  a:hover { color: tomato }
   h2 { font-weight: lighter; }
   input {
     width: 200px;
@@ -80,10 +94,21 @@ export default {
     border-radius: 5px;
     margin: 10px 0;
     background-color: #d8dbe3;
+    cursor: pointer;
   }
   input[type="file"] {
     display: none;
   }
+  table {
+    background-color: #d8dbe3;
+    width: 100%;
+  }
+  td {
+    border-bottom: 1px solid #898989;
+    padding: 5px 15px;
+  }
+  .left-cell { text-align: left; }
+  .right-cell { text-align: right; }
   .custom-file-chooser {
     width: 98%;
     background-color: #d8dbe3;
@@ -94,11 +119,30 @@ export default {
     color: #949494;
     cursor: pointer;
   }
+  .small-file-chooser {
+    display: flex !important;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px 0;
+    width: 100%;
+  }
+  .small-file-chooser p {
+    margin-right: 40px;
+  }
+  #table-wrapper {
+    max-height: 40vh;
+    overflow-y: scroll;
+  }
   #button-wrapper {
     width: 99%;
     text-align: right;
   }
+  #button-wrapper input:hover {
+    background-color: #949494;
+    color: white;
+  }
   #image-icon {
     font-size: 5rem;
+    margin-left: 10px;
   }
 </style>

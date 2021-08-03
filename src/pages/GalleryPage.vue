@@ -84,6 +84,7 @@ export default {
     grid-template-rows: 10% 90%;
   }
   #import-btn {
+    z-index: 1;
     position: absolute;
     bottom: 30px;
     right: 30px;
