@@ -48,6 +48,7 @@ export default {
       http('POST', '/albums', {'name':this.albumName}).then(r => {
         if (r.status == 201) r.json().then(album => this.albums.push(album));
         this.albumCreation = false;
+        this.albumName = '';
       });
     },
     removeAlbum(index) {
