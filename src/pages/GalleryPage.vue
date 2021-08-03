@@ -26,9 +26,9 @@
           </tbody>
         </table>
       </Modal>
-      <Carousel v-if="carouselPtr" @close="carouselPtr = undefined">
+      <Carousel v-if="carouselPtr">
         <Picture :height="800" :album="slug" :hash="carouselPtr"
-           @update="updatePics"/>
+           @update="updatePics" @close="carouselPtr = undefined"/>
       </Carousel>
     </div>
   </div>

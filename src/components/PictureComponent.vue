@@ -21,7 +21,7 @@ export default {
   methods: {
     removePic() {
       http('PATCH', '/albums/'+this.album+'/pics', {'-': [this.hash]})
-        .then(() => this.$emit('update'))
+        .then(() => this.$emit('update')).then(this.$emit('close'))
     },
   }
 }
