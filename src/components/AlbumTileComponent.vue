@@ -3,24 +3,23 @@
     <div v-if="album">
       <div class="album-tile">
         <div class="album-tile-top" :style="{ backgroundImage: preview }">
-          <a class="album-tile-delete" href="#"
-             v-on:click.stop="$emit('remove', index)">
+          <a class="album-tile-delete" v-on:click.stop="$emit('remove', index)">
             <font-awesome-icon :icon="['fa', 'trash']" />
           </a>
         </div>
         <div class="album-tile-bottom">
           <div class="album-tile-infos">
-            <div class="album-tile-title">{{ album.name }}</div><br>
+            <a class="album-tile-title">{{ album.name }}</a><br>
             <div class="album-tile-count">{{ album.count }} photos</div>
           </div>
         </div>
       </div>
     </div>
-    <div v-else v-on:click="$emit('create')"
+    <a v-else v-on:click="$emit('create')"
          class="album-tile album-tile-create">
       <p class="create-logo">+</p>
       <p class="create-label">Create New Album</p>
-    </div>
+    </a>
   </div>
 </template>
 

@@ -1,8 +1,8 @@
 <template>
   <div id="modal">
     <div id="modal-content">
-      <font-awesome-icon id="modal-cancel" 
-        :icon="['fa', 'times']" v-on:click="$emit('close')" />
+      <font-awesome-icon id="modal-cancel" :icon="['fa', 'times']"
+        v-on:click="$emit('close')" />
       <slot></slot>
     </div>
   </div>

@@ -15,7 +15,7 @@
       <Modal v-if="showImport" @close="showImport = false">
         <NewPicComponent @added="updatePics"/>
       </Modal>
-      <Carousel v-if="carouselPtr">
+      <Carousel v-if="carouselPtr" @close="carouselPtr = undefined">
         <Picture :height="800" :album="slug" :hash="carouselPtr"
            @update="updatePics" @close="carouselPtr = undefined"/>
       </Carousel>
