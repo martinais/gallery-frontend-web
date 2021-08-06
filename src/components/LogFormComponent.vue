@@ -4,7 +4,7 @@
       <h1>Log In</h1>
       <form v-on:submit.prevent="handleSubmit">
         <div @click="reset">
-          <input :class="{ softInput: emailed }" :disabled="emailed"
+          <input :class="{ softInput: emailed }"
               v-model="userName" placeholder="Enter your Pseudo"
               type="text" id="pseudoField">
         </div>
