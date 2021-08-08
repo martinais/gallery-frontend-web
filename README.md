@@ -1,6 +1,8 @@
 # gallery-frontend-web
 
-https://img.shields.io/badge/release-Alpha%20Corvi-blue
+![](https://img.shields.io/badge/release-Alpha%20Corvi-blue)
+![versionBadge](https://img.shields.io/badge/Python-3.9.0-blue.svg?logo=python&logoColor=white&releaseéAlpha%20Corvi&blue) 
+
 
 ## development setup
 
