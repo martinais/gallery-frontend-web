@@ -1,5 +1,7 @@
 # gallery-frontend-web
 
+https://img.shields.io/badge/release-Alpha%20Corvi-blue
+
 ## development setup
 
 Start app:
