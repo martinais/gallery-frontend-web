@@ -1,7 +1,12 @@
 # gallery-frontend-web
 
 ![](https://img.shields.io/badge/release-Alpha%20Corvi-blue)
-![](https://img.shields.io/badge/Release&Alpha%20Corvi&blue) 
+![](https://img.shields.io/badge/Release&Alpha%20Corvi&blue)
+
+
+![](https://img.shields.io/badge/Vue.js-1.0.0.svg?logo=vue&logoColor=white)
+![](https://img.shields.io/badge/Release&Alpha%20Corvi&blue)
+Python-3.9.0-blue.svg?logo=python&logoColor=white&
 
 
 ## development setup
