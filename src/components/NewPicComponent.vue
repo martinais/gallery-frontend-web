@@ -10,19 +10,19 @@
       <p>Click to add pictures or drag from your computer.</p>
     </label>
     <input id="file-chooser" type="file" multiple accept="image/*"
-       @change="selectPics"/>
+           @change="selectPics"/>
     <br>
     <div id="table-wrapper">
       <table cellspacing="0" cellpadding="0">
         <tbody>
-          <tr v-for="(file, index) in uploadQueue" v-bind:key="file.name">
-            <td class="left-cell">{{ file.name }}</td>
-            <td class="right-cell">
-              <a href="#" v-on:click.prevent="removeUpload(index)">
-                <font-awesome-icon :icon="['fa', 'trash']" />
-              </a>
-            </td>
-          </tr>
+        <tr v-for="(file, index) in uploadQueue" v-bind:key="file.name">
+          <td class="left-cell">{{ file.name }}</td>
+          <td class="right-cell">
+            <a href="#" v-on:click.prevent="removeUpload(index)">
+              <font-awesome-icon :icon="['fa', 'trash']"/>
+            </a>
+          </td>
+        </tr>
         </tbody>
       </table>
     </div>
@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { http, httpUpload } from '../helpers/http.js'
+import {http, httpUpload} from '../helpers/http.js'
 
 export default {
   name: 'NewPicComponent',
@@ -59,14 +59,14 @@ export default {
     progress(hash) {
       // TODO : update progress bar
       this.uploadProgress.push(hash);
-      if (this.uploadProgress.length == this.uploadQueue.length) {
+      if (this.uploadProgress.length === this.uploadQueue.length) {
         this.updateAlbum();
         this.uploadQueue = [];
       }
     },
     updateAlbum() {
-      const data = { '+': this.uploadProgress }
-      http('PATCH', '/albums/'+this.slug+'/pics', data).then(()=>{
+      const data = {'+': this.uploadProgress}
+      http('PATCH', '/albums/' + this.slug + '/pics', data).then(() => {
         this.$emit('added');
       })
     },
@@ -80,69 +80,92 @@ export default {
 </script>
 
 <style scoped>
-  a { 
-    color: #949494;
-    text-decoration: none;
-  }
-  a:hover { color: tomato }
-  h2 { font-weight: lighter; }
-  input {
-    width: 200px;
-    font-size: 1rem;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    margin: 10px 0;
-    background-color: #d8dbe3;
-    cursor: pointer;
-  }
-  input[type="file"] {
-    display: none;
-  }
-  table {
-    background-color: #d8dbe3;
-    width: 100%;
-  }
-  td {
-    border-bottom: 1px solid #898989;
-    padding: 5px 15px;
-  }
-  .left-cell { text-align: left; }
-  .right-cell { text-align: right; }
-  .custom-file-chooser {
-    width: 98%;
-    background-color: #d8dbe3;
-    border-top: 1px solid #898989;
-    border-radius: 0 0 10px 10px;
-    display: inline-block;
-    padding: 50px 0;
-    color: #949494;
-    cursor: pointer;
-  }
-  .small-file-chooser {
-    display: flex !important;
-    align-items: center;
-    justify-content: space-between;
-    padding: 5px 0;
-    width: 100%;
-  }
-  .small-file-chooser p {
-    margin-right: 40px;
-  }
-  #table-wrapper {
-    max-height: 40vh;
-    overflow-y: scroll;
-  }
-  #button-wrapper {
-    width: 99%;
-    text-align: right;
-  }
-  #button-wrapper input:hover {
-    background-color: #949494;
-    color: white;
-  }
-  #image-icon {
-    font-size: 5rem;
-    margin-left: 10px;
-  }
+a {
+  color: #949494;
+  text-decoration: none;
+}
+
+a:hover {
+  color: tomato
+}
+
+h2 {
+  font-weight: lighter;
+}
+
+input {
+  width: 200px;
+  font-size: 1rem;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  margin: 10px 0;
+  background-color: #d8dbe3;
+  cursor: pointer;
+}
+
+input[type="file"] {
+  display: none;
+}
+
+table {
+  background-color: #d8dbe3;
+  width: 100%;
+}
+
+td {
+  border-bottom: 1px solid #898989;
+  padding: 5px 15px;
+}
+
+.left-cell {
+  text-align: left;
+}
+
+.right-cell {
+  text-align: right;
+}
+
+.custom-file-chooser {
+  width: 98%;
+  background-color: #d8dbe3;
+  border-top: 1px solid #898989;
+  border-radius: 0 0 10px 10px;
+  display: inline-block;
+  padding: 50px 0;
+  color: #949494;
+  cursor: pointer;
+}
+
+.small-file-chooser {
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 0;
+  width: 100%;
+}
+
+.small-file-chooser p {
+  margin-right: 40px;
+}
+
+#table-wrapper {
+  max-height: 40vh;
+  overflow-y: scroll;
+}
+
+#button-wrapper {
+  width: 99%;
+  text-align: right;
+}
+
+#button-wrapper input:hover {
+  background-color: #949494;
+  color: white;
+}
+
+#image-icon {
+  font-size: 5rem;
+  margin-left: 10px;
+}
 </style>

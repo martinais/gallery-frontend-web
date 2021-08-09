@@ -1,12 +1,12 @@
-import { createApp, h } from 'vue'
+import {createApp, h} from 'vue'
 
 import LoginPage from './pages/LoginPage.vue'
 import HomePage from './pages/HomePage.vue'
 import GalleryPage from './pages/GalleryPage.vue'
 
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { faTrash, faCheck, faTimes, faPlus, faAngleLeft, faAngleRight, faImages } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import {library} from '@fortawesome/fontawesome-svg-core'
+import {faTrash, faCheck, faTimes, faPlus, faAngleLeft, faAngleRight, faImages} from '@fortawesome/free-solid-svg-icons'
+import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome'
 
 library.add(faTrash)
 library.add(faCheck)
@@ -16,26 +16,26 @@ library.add(faPlus)
 library.add(faAngleLeft)
 library.add(faAngleRight)
 
-const NotFoundComponent = { template: '<p>Page not found</p>' }
+const NotFoundComponent = {template: '<p>Page not found</p>'}
 
 const routes = {
-  '/': LoginPage,
-  '/home': HomePage,
-  '/album': GalleryPage
+    '/': LoginPage,
+    '/home': HomePage,
+    '/album': GalleryPage
 }
 
 const router = {
-  data: () => ({
-    currentRoute: window.location.pathname
-  }),
-  computed: {
-    CurrentComponent() {
-      return routes[this.currentRoute] || NotFoundComponent
+    data: () => ({
+        currentRoute: window.location.pathname
+    }),
+    computed: {
+        CurrentComponent() {
+            return routes[this.currentRoute] || NotFoundComponent
+        }
+    },
+    render() {
+        return h(this.CurrentComponent)
     }
-  },
-  render() {
-    return h(this.CurrentComponent)
-  }
 }
 
 const app = createApp(router)
