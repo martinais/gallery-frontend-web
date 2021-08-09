@@ -30,7 +30,7 @@ export default {
     border-radius: 20px;
     border: 1px solid #888;
     background-color: #f6f6f6;
-    width: 60%;
+    width: 50%;
     margin: 5% auto;
     padding: 10px;
     animation-name: animatetop;

@@ -8,13 +8,7 @@
                  :album="album" :index="index" @remove="removeAlbum" />
       <AlbumTile @create="albumCreation = true"/>
       <Modal v-if="albumCreation" @close="albumCreation = false">
-        <form id="album-create-form" v-on:submit.prevent="createAlbum">
-          <h1>Create a new album</h1>
-          <input v-model="albumName" placeholder="Name" type="text"/>
-          <button type="submit">
-            <font-awesome-icon :icon="['fa', 'check']" />
-          </button>
-        </form>
+        <NewAlbumComponent @created="albumCreationHandler"/>
       </Modal>
     </div>
   </div>
@@ -25,14 +19,14 @@ import { http } from '../helpers/http.js'
 import Header from '../components/HeaderComponent.vue';
 import AlbumTile from '../components/AlbumTileComponent.vue';
 import Modal from '../components/ModalComponent.vue';
+import NewAlbumComponent from '../components/NewAlbumComponent.vue';
 
 export default {
   name: 'HomePage',
-  components: { Header, AlbumTile, Modal },
+  components: { Header, AlbumTile, Modal, NewAlbumComponent},
   data() {
     return {
       albumCreation: false,
-      albumName: '',
       albums: [],
       user: {},
     }
@@ -44,18 +38,15 @@ export default {
   },
   methods: {
     navigateAlbum: (slug) => document.location = '/album?slug=' + slug,
-    createAlbum() {
-      http('POST', '/albums', {'name':this.albumName}).then(r => {
-        if (r.status == 201) r.json().then(album => this.albums.push(album));
-        this.albumCreation = false;
-        this.albumName = '';
-      });
-    },
     removeAlbum(index) {
       let album = this.albums[index];
       http('DELETE', '/albums/' + album.slug).then(response => {
         if (response.status == 204) this.albums.splice(index, 1);
       });
+    },
+    albumCreationHandler(album) {
+      this.albums.push(album);
+      this.albumCreation = false;
     }
   },
 }
