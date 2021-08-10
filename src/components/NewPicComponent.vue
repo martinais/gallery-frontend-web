@@ -18,9 +18,7 @@
         <tr v-for="(file, index) in uploadQueue" v-bind:key="file.name">
           <td class="left-cell">{{ file.name }}</td>
           <td class="right-cell">
-            <a href="#" v-on:click.prevent="removeUpload(index)">
-              <font-awesome-icon :icon="['fa', 'trash']"/>
-            </a>
+            <TrashComponent class="trash" @remove="removeUpload(index)"/>
           </td>
         </tr>
         </tbody>
@@ -34,9 +32,11 @@
 
 <script>
 import {http, httpUpload} from '../helpers/http.js'
+import TrashComponent from "./TrashComponent";
 
 export default {
   name: 'NewPicComponent',
+  components: {TrashComponent},
   data() {
     return {
       slug: undefined,
@@ -80,13 +80,8 @@ export default {
 </script>
 
 <style scoped>
-a {
+.trash {
   color: #949494;
-  text-decoration: none;
-}
-
-a:hover {
-  color: tomato
 }
 
 h2 {

@@ -1,8 +1,6 @@
 <template>
   <div style="position: relative">
-    <a id="trash" href="#" v-on:click.stop="removePic">
-      <font-awesome-icon :icon="['fa', 'trash']"/>
-    </a>
+    <TrashComponent class="trash" @remove="removePic"/>
     <img v-if="content" v-bind:src="content" :style="{height:(height-30)+'px'}"/>
     <p v-else>incomming ...</p>
   </div>
@@ -10,9 +8,11 @@
 
 <script>
 import {http, httpBuildPic} from '../helpers/http.js'
+import TrashComponent from "./TrashComponent";
 
 export default {
   name: 'Picture',
+  components: {TrashComponent},
   props: {hash: String, album: String, height: Number},
   data() {
     return {content: undefined}
@@ -30,19 +30,15 @@ export default {
 </script>
 
 <style scoped>
-img {
-  margin: 15px;
-}
-
-#trash:hover {
-  color: red
-}
-
-#trash {
+.trash {
   position: absolute;
   font-size: 2rem;
   right: 30px;
   top: 30px;
   color: white;
+}
+
+img {
+  margin: 15px;
 }
 </style>
