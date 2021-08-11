@@ -1,15 +1,15 @@
 <template>
   <div class="grid">
     <Header :user="user" step="homepage"/>
-    <div class="content" v-on:click="closeModal">
+    <div class="content">
       <AlbumTile v-for="(album, index) in albums"
                  v-bind:key="album.slug"
                  v-on:click="navigateAlbum(album.slug)"
                  :album="album" :index="index" @remove="removeAlbum"/>
       <AlbumTile @create="albumCreation = true"/>
-      <Modal v-if="albumCreation" @close="albumCreation = false">
+      <FullModalComponent v-if="albumCreation" @close="albumCreation = false">
         <NewAlbumComponent @created="albumCreationHandler"/>
-      </Modal>
+      </FullModalComponent>
     </div>
   </div>
 </template>
@@ -18,12 +18,12 @@
 import {http} from '../helpers/http.js'
 import Header from '../components/HeaderComponent.vue';
 import AlbumTile from '../components/AlbumTileComponent.vue';
-import Modal from '../components/ModalComponent.vue';
 import NewAlbumComponent from '../components/NewAlbumComponent.vue';
+import FullModalComponent from "../components/FullModalComponent";
 
 export default {
   name: 'HomePage',
-  components: {Header, AlbumTile, Modal, NewAlbumComponent},
+  components: {FullModalComponent, Header, AlbumTile, NewAlbumComponent},
   data() {
     return {
       albumCreation: false,
@@ -33,7 +33,7 @@ export default {
   },
   mounted() {
     http('GET', '/albums').then(r => {
-      if (r.status == 200) r.json().then(albums => this.albums = albums);
+      if (r.status === 200) r.json().then(albums => this.albums = albums);
     });
   },
   methods: {
@@ -41,7 +41,7 @@ export default {
     removeAlbum(index) {
       let album = this.albums[index];
       http('DELETE', '/albums/' + album.slug).then(response => {
-        if (response.status == 204) this.albums.splice(index, 1);
+        if (response.status === 204) this.albums.splice(index, 1);
       });
     },
     albumCreationHandler(album) {
@@ -57,11 +57,9 @@ input {
   outline: none;
   width: 80%;
   padding: 15px;
-  border: none;
-  border-bottom: solid;
   border-radius: 10px 0 0 0;
-  border-color: grey;
-  border-width: 5px;
+  border: 5px none grey;
+  border-bottom-style: solid;
   background-color: lightgrey;
 }
 
@@ -72,11 +70,9 @@ input:focus {
 form > button {
   outline: none;
   padding: 15px;
-  border: none;
-  border-bottom: solid;
   border-radius: 0 10px 0 0;
-  border-color: grey;
-  border-width: 5px;
+  border: 5px none grey;
+  border-bottom-style: solid;
   background-color: lightgrey;
   color: grey;
   cursor: pointer;

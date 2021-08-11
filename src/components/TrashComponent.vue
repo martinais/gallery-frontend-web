@@ -1,7 +1,7 @@
 <template>
-  <a class="trash" href="#" v-on:click.stop="$emit('remove')">
-    <font-awesome-icon :icon="['fa', 'trash']"/>
-  </a>
+  <div v-on:click.stop="$emit('remove')">
+    <font-awesome-icon :icon="['fa', 'trash']" class="style"/>
+  </div>
 </template>
 
 <script>
@@ -11,7 +11,11 @@ export default {
 </script>
 
 <style scoped>
-.trash:hover {
+.style {
+  cursor: pointer;
+}
+
+.style:hover {
   color: tomato;
 }
 </style>

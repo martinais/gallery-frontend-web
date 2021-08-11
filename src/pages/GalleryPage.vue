@@ -2,22 +2,19 @@
   <div class="grid">
     <Header/>
     <div id="content" ref="content" @wheel="handleScroll">
-      <button id="import-btn" v-on:click="showImport = true">
-        +
-      </button>
+      <button id="import-btn" v-on:click="showImport = true">+</button>
       <div v-for="j in [0,1,2]" v-bind:key="j" class="gallery-row">
-        <div v-on:click="carouselPtr = hash" style="display: inline-block"
-             v-bind:key="hash" v-for="hash in pics[j]">
-          <Picture :height="rowHeight" :album="slug" :hash="hash"
-                   @update="updatePics"/>
+        <div class="pictureWrapper" v-on:click="carouselPtr = hash" v-bind:key="hash" v-for="hash in pics[j]">
+          <TrashComponent class="trash" @remove="removePic(hash)"/>
+          <Picture :height="rowHeight" :album="slug" :hash="hash" @update="updatePics"/>
         </div>
       </div>
-      <Modal v-if="showImport" @close="showImport = false">
+      <FullModalComponent v-if="showImport" @close="showImport = false">
         <NewPicComponent @added="updatePics"/>
-      </Modal>
-      <Carousel v-if="carouselPtr" @close="carouselPtr = undefined">
-        <Picture :height="800" :album="slug" :hash="carouselPtr"
-                 @update="updatePics" @close="carouselPtr = undefined"/>
+      </FullModalComponent>
+      <Carousel v-if="carouselPtr" :album="slug" :hash="carouselPtr"
+                @close="carouselPtr = undefined" @update="updatePics">
+        <Picture :height="800" :hash="carouselPtr"/>
       </Carousel>
     </div>
   </div>
@@ -26,14 +23,15 @@
 <script>
 import {http} from '../helpers/http.js'
 import Header from '../components/HeaderComponent.vue';
-import Modal from '../components/ModalComponent.vue';
 import Carousel from '../components/CarouselComponent.vue';
 import Picture from '../components/PictureComponent.vue';
 import NewPicComponent from '../components/NewPicComponent.vue';
+import FullModalComponent from "../components/FullModalComponent";
+import TrashComponent from "../components/TrashComponent";
 
 export default {
   name: 'Gallery',
-  components: {Header, Modal, Picture, Carousel, NewPicComponent},
+  components: {TrashComponent, FullModalComponent, Header, Picture, Carousel, NewPicComponent},
   data() {
     return {
       slug: undefined,
@@ -55,6 +53,9 @@ export default {
     window.removeEventListener('resize', this.extractRowHeight)
   },
   methods: {
+    removePic(hash) {
+      http('PATCH', '/albums/' + this.slug + '/pics', {'-': [hash]}).then(() => this.updatePics())
+    },
     handleScroll(event) {
       this.$refs.content.scrollBy(event.deltaY, 0)
     },
@@ -63,7 +64,7 @@ export default {
     },
     updatePics() {
       this.showImport = false;
-      const x = (m, n) => m.filter((_, i) => i % 3 == n)
+      const x = (m, n) => m.filter((_, i) => i % 3 === n)
       http('GET', '/albums/' + this.slug + '/pics').then(r => r.json())
           .then(d => this.pics = [x(d.pics, 0), x(d.pics, 1), x(d.pics, 2)])
     },
@@ -112,5 +113,18 @@ export default {
 .gallery-row {
   font-size: 0;
   text-align: left;
+}
+
+.pictureWrapper {
+  display: inline-block;
+  position: relative
+}
+
+.trash {
+  position: absolute;
+  font-size: 2rem;
+  right: 30px;
+  top: 30px;
+  color: white;
 }
 </style>

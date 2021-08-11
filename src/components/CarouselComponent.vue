@@ -1,55 +1,56 @@
 <template>
-  <div id="modal">
-    <div id="modal-content">
-      <font-awesome-icon id="modal-cancel"
-                         :icon="['fa', 'times']" v-on:click="$emit('close')"/>
-      <!--<font-awesome-icon id="modal-right" class="angle"
-        :icon="['fa', 'angle-right']" v-on:click="$emit('close')" />
-      <font-awesome-icon id="modal-left" class="angle"
-      :icon="['fa', 'angle-left']" v-on:click="$emit('close')" />-->
+  <Modal>
+    <!--<font-awesome-icon id="modal-right" class="angle"
+      :icon="['fa', 'angle-right']" v-on:click="$emit('close')" />
+      -->
+    <div id="actionColumn">
+      <CloseComponent class="action" @close="$emit('close')"/>
+      <TrashComponent class="action" @remove="removePic"/>
+    </div>
+    <div id="picWrapper">
       <slot></slot>
     </div>
-  </div>
+    <!--<font-awesome-icon id="modal-left" class="angle"
+    :icon="['fa', 'angle-left']" v-on:click="$emit('close')" />-->
+  </Modal>
 </template>
 
 <script>
+import {http} from "../helpers/http";
+import Modal from "./ModalComponent";
+import TrashComponent from "./TrashComponent";
+import CloseComponent from "./CloseComponent";
+
 export default {
   name: 'Carousel',
+  props: {album: String, hash: String},
+  components: {CloseComponent, Modal, TrashComponent},
+  methods: {
+    removePic() {
+      http('PATCH', '/albums/' + this.album + '/pics', {'-': [this.hash]})
+          .then(() => this.$emit('update')).then(this.$emit('close'))
+    },
+  }
 }
 </script>
 
 <style scoped>
-#modal {
-  position: fixed;
-  z-index: 1;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgba(0, 0, 0, 0.5);
+#picWrapper {
+  margin-top: 30px;
+
 }
 
-#modal-content {
-  position: relative;
-  margin: 5% auto;
-  padding: 1em;
-  animation-name: animatetop;
-  animation-duration: 0.4s;
+#actionColumn {
+  position: fixed;
+  right: 30px;
+  z-index: 3;
 }
 
-#modal-cancel {
-  position: fixed;
-  top: 30px;
-  right: 40px;
-  border: none;
+.action {
+  display: block;
+  font-size: 2.5rem;
   color: white;
-  font-size: 3rem;
-}
-
-#modal-cancel:hover {
-  color: red;
-  cursor: pointer;
+  margin: 30px 0;
 }
 
 .angle {
@@ -72,16 +73,5 @@ export default {
 
 #modal-left {
   left: 40px;
-}
-
-@keyframes animatetop {
-  from {
-    top: -300px;
-    opacity: 0
-  }
-  to {
-    top: 0;
-    opacity: 1
-  }
 }
 </style>
