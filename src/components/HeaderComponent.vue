@@ -57,6 +57,9 @@ button {
 }
 
 #header {
+  min-height: 70px;
+  grid-column-start: 1;
+  grid-column-end: -1;
   background-color: #FCE0E0;
   display: grid;
   grid-template-areas:

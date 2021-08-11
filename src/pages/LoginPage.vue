@@ -49,11 +49,6 @@ export default {
   grid-template-columns: 20% 20% 10% 10% 10% 10% 10% 10%;
 }
 
-#header {
-  grid-column-start: 1;
-  grid-column-end: -1;
-}
-
 #welcome {
   grid-row-start: 2;
   grid-column-end: span 3;

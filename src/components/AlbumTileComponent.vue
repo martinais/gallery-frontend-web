@@ -3,9 +3,7 @@
     <div v-if="album">
       <div class="album-tile">
         <div class="album-tile-top" :style="{ backgroundImage: preview }">
-          <a class="album-tile-delete" v-on:click.stop="$emit('remove', index)">
-            <font-awesome-icon :icon="['fa', 'trash']"/>
-          </a>
+          <TrashComponent class="album-tile-delete" @remove="$emit('remove', index)"/>
         </div>
         <div class="album-tile-bottom">
           <div class="album-tile-infos">
@@ -25,9 +23,11 @@
 
 <script>
 import {httpBuildPic} from '../helpers/http.js'
+import TrashComponent from "./TrashComponent";
 
 export default {
   name: 'AlbumTile',
+  components: {TrashComponent},
   props: {album: Object, index: Number},
   data() {
     return {preview: "url('/album-default.jpg')"}
@@ -66,10 +66,6 @@ export default {
   float: right;
   color: #f6f6f6;
   margin: 15px;
-}
-
-.album-tile-delete:hover {
-  color: red;
 }
 
 .album-tile-bottom {
