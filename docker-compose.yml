@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   frontend:
-    image: node:latest
+    image: node:lts-alpine
     tty: true
     ports:
       - 8080:8080
