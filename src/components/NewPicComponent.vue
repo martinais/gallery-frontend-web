@@ -57,7 +57,6 @@ export default {
       this.uploadQueue.splice(index, 1);
     },
     progress(hash) {
-      // TODO : update progress bar
       this.uploadProgress.push(hash);
       if (this.uploadProgress.length === this.uploadQueue.length) {
         this.updateAlbum();
@@ -72,7 +71,8 @@ export default {
     },
     uploadPics() {
       for (let i = 0; i < this.uploadQueue.length; i++) {
-        httpUpload(this.uploadQueue[i]).then(hash => this.progress(hash))
+        httpUpload(this.uploadQueue[i]).then(hash => this.progress(hash));
+        document.getElementsByClassName('left-cell')[i].classList.add('done');
       }
     },
   }
@@ -113,6 +113,7 @@ td {
   padding: 5px 15px;
 }
 
+.left-cell.done { color: green; }
 .left-cell {
   text-align: left;
 }

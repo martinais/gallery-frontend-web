@@ -26,6 +26,8 @@ function hashFile(file) {
 }
 
 function httpSendFile(hash, file) {
+    // TODO : use a HEAD before the PUT to verify if file exists and avoid 
+    // pushing it
     const fd = new FormData()
     fd.append('file', file)
     const user = JSON.parse(localStorage.getItem('user'));
